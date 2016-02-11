@@ -1,0 +1,4 @@
+name=console;class=com.tp2.strategies.StrategySysout;singleton=false
+name=pretty;class=com.tp2.strategies.StrategyPretty;singleton=false
+name=json;class=com.tp2.strategies.StrategyJSON;singleton=true
+name=choupette;class=com.tp2.strategies.StrategyChoupette;singleton=true
