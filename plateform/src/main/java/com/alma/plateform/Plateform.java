@@ -18,7 +18,7 @@ public class Plateform {
     private Plateform() throws MalformedURLException {
         Parser p = new Parser();
         try {
-            plugins = p.parseIt("/comptes/E122371M/legendary-invention/plateform/src/main/resources/extensions.txt");
+            plugins = p.parseIt("src/main/resources/extensions.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
