@@ -36,5 +36,12 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+		<dependency>
+				<groupId>com.alma.plateform</groupId>
+				<artifactId>legendary-invention-plateform</artifactId>
+				<version>1.0-SNAPSHOT</version>
+				<scope>system</scope>
+				<systemPath>/comptes/E115911Q/M1ALMA/legendary-invention/plateform/target/legendary-invention-plateform-1.0-SNAPSHOT.jar</systemPath>
+		</dependency>
   </dependencies>
 </project>
