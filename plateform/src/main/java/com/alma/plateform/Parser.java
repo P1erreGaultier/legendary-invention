@@ -1,11 +1,11 @@
 package com.alma.plateform;
 
-import com.alma.plateform.Plugin;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 
 public class Parser {
@@ -25,7 +25,6 @@ public class Parser {
             Plugin plug = new Plugin();
 			String[] OneAttributeOneValue = aLine.split(";");
             for (int c =0; c< OneAttributeOneValue.length; c++){
-
                 properties.setProperty(OneAttributeOneValue[c].split("=")[0],OneAttributeOneValue[c].split("=")[1]);
             }
 

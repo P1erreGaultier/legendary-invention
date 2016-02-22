@@ -14,8 +14,10 @@ public class Plateform {
     private static Plateform instance;
     private URLClassLoader classLoader;
     private Map<String, Plugin> plugins;
+    private Factory facto;
 
     private Plateform() throws MalformedURLException {
+        facto = new ClassicFactory();
         Parser p = new Parser();
         try {
             plugins = p.parseIt("src/main/resources/extensions.txt");
@@ -45,9 +47,9 @@ public class Plateform {
     }
 
     public Object getExtension(String extension_name) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        Plugin plugin = plugins.get(extension_name);
 
-        return Class.forName(plugin.getProperties().getProperty("class"), true, classLoader).newInstance();
+        Plugin plugin = plugins.get(extension_name);
+        return facto.get(plugin.getProperties().getProperty("class"), classLoader);
     }
 
     public static void main(String[] args) {
