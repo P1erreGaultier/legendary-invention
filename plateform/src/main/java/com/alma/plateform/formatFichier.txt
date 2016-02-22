@@ -1,3 +1,0 @@
-name=console;class=com.tp2.strategies.StrategySysout;classpath=/comptes/E122371M/legendary-invention/plateform/target/classes/com/alma/plateform/
-name=pretty;class=com.tp2.strategies.StrategyPretty;classpath=/comptes/E122371M/legendary-invention/plateform/target/classes/com/alma/plateform/
-name=json;class=com.tp2.strategies.StrategyJSON;classpath=/comptes/E122371M/legendary-invention/plateform/target/classes/com/alma/plateform/

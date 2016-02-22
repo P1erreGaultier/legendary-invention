@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Created by E122371M on 11/02/16.
@@ -20,16 +18,18 @@ public class Plateform {
     private Plateform() throws MalformedURLException {
         Parser p = new Parser();
         try {
-            plugins = p.parseIt("/comptes/E122371M/legendary-invention/plateform/src/main/java/com/alma/plateform/formatFichier.txt");
+            plugins = p.parseIt("/comptes/E122371M/legendary-invention/plateform/src/main/resources/extensions.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        System.out.println(plugins);
-
-        // TODO chargement de tous les classPath depuis le fichier de description
-        URL[] urls = new URL[1];
-        urls[0] = new URL("file:///comptes/E15A202A/legendary-invention/plateform/target/classes/com/alma/plateform/");
+        // génération des urls du class loader
+        int i = 0;
+        URL[] urls = new URL[plugins.size()];
+        for(Map.Entry<String, Plugin> plugin : plugins.entrySet()) {
+            urls[i] = new URL("file://" + plugin.getValue().getProperties().getProperty("classpath"));
+            i++;
+        }
         classLoader = URLClassLoader.newInstance(urls);
     }
 
