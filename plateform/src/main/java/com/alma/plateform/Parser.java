@@ -5,25 +5,22 @@ import com.alma.plateform.Plugin;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 
 public class Parser {
 
 	String aLine;
 
-	public List<Plugin> parseIt(String formatFichier) throws IOException{
+	public Map<String, Plugin> parseIt(String formatFichier) throws IOException{
 
 		FileReader fileReader = new FileReader(formatFichier);
 		BufferedReader reader = new BufferedReader(fileReader);
 
-        List<Plugin> res = new ArrayList<>();
+        Map<String, Plugin> res = new HashMap<>();
 		int i = 0;
         Properties properties = new Properties();
         while (reader.ready()) {
-
 			aLine = reader.readLine();
             Plugin plug = new Plugin();
 			String[] OneAttributeOneValue = aLine.split(";");
@@ -33,7 +30,7 @@ public class Parser {
             }
 
 			plug.setProperties(properties);
-            res.add(plug);
+            res.put(plug.getProperties().getProperty("name"),plug);
 		}
 		reader.close();
 		return res;

@@ -26,7 +26,7 @@ public class Plateform {
         plugins.put("JavaBean", javaBean);
         // TODo chargement de tous les classPath depuis le fichier de description
         URL[] urls = new URL[1];
-        urls[0] = new URL("file:///comptes/E122371M/legendary-invention/plateform/target/classes/com/alma/plateform/");
+        urls[0] = new URL("file:///comptes/E15A202A/legendary-invention/plateform/target/classes/com/alma/plateform/");
         classLoader = URLClassLoader.newInstance(urls);
     }
 
