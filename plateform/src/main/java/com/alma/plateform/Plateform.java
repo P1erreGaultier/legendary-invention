@@ -1,5 +1,6 @@
 package com.alma.plateform;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -17,14 +18,16 @@ public class Plateform {
     private Map<String, Plugin> plugins;
 
     private Plateform() throws MalformedURLException {
-        plugins = new HashMap<>();
-        //TODO chargement de toutes les extensions depuis le fichier de description
-        Plugin javaBean = new Plugin();
-        Properties props = new Properties();
-        props.setProperty("class", "com.alma.plateform.JavaBean");
-        javaBean.setProperties(props);
-        plugins.put("JavaBean", javaBean);
-        // TODo chargement de tous les classPath depuis le fichier de description
+        Parser p = new Parser();
+        try {
+            plugins = p.parseIt("/comptes/E122371M/legendary-invention/plateform/src/main/java/com/alma/plateform/formatFichier.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(plugins);
+
+        // TODO chargement de tous les classPath depuis le fichier de description
         URL[] urls = new URL[1];
         urls[0] = new URL("file:///comptes/E122371M/legendary-invention/plateform/target/classes/com/alma/plateform/");
         classLoader = URLClassLoader.newInstance(urls);
