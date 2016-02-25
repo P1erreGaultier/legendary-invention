@@ -1,0 +1,1 @@
+name=one_monster;class=com.alma.extension.one_monster.Monster;classpath=/comptes/E115911Q/M1ALMA/legendary-invention/extension/one_monster/target/classes/com/alma/extension/one_monster

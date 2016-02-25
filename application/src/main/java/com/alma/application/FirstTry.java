@@ -3,9 +3,8 @@ package com.alma.application;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import com.alma.application.data.Monster;
-import com.alma.plateform.*;
-import java.awt.Container;
+import com.alma.application.data.IMonster;
+import com.alma.plateform.Plateform;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -15,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,11 +21,11 @@ import java.io.IOException;
 	public class FirstTry extends JFrame {
 
 			Plateform platform;
-			private Monster m1;
+			private IMonster m1;
 
-	    public FirstTry(Monster m) {
+	    public FirstTry() {
 					try{
-						platform = platform.getInstance();
+						platform = Plateform.getInstance();
 					}catch(Exception e){
 						System.out.println("PROBLEM WHEN LOAD PLATFORM");
 					}
@@ -37,8 +35,19 @@ import java.io.IOException;
 					}else{
 						System.out.println("PLATFORM NOTLOADED !");
 					}
-	    		m1 = m;
-	        initUI();
+            try {
+
+                IMonster facto = (IMonster) platform.getExtension("one_monster");
+                m1 = facto.createMonster20();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
+
+            initUI();
 	    }
 
 	    private void initUI() {
@@ -111,8 +120,7 @@ import java.io.IOException;
 	        
 	            @Override
 	            public void run() {
-	            	Monster m = new Monster(12, "src/main/java/com/alma/application/352ec142.png");
-	                FirstTry ex = new FirstTry(m);
+	                FirstTry ex = new FirstTry();
 	                ex.setVisible(true);
 	            }
 	        });
