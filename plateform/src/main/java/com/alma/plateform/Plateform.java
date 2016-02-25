@@ -1,5 +1,8 @@
 package com.alma.plateform;
 
+import com.alma.plateform.factories.ClassicFactory;
+import com.alma.plateform.factories.Factory;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -7,7 +10,7 @@ import java.net.URLClassLoader;
 import java.util.Map;
 
 /**
- * Created by E122371M on 11/02/16.
+ * Classe singleton représentant une plateforme de plugins
  */
 public class Plateform {
 
@@ -50,14 +53,5 @@ public class Plateform {
 
         Plugin plugin = plugins.get(extension_name);
         return facto.get(plugin.getProperties().getProperty("class"), classLoader);
-    }
-
-    public static void main(String[] args) {
-        try {
-            JavaBean bean = (JavaBean) Plateform.getInstance().getExtension("JavaBean");
-            bean.sayToto();
-        } catch (ClassNotFoundException | IllegalAccessException | MalformedURLException | InstantiationException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -3,7 +3,7 @@ package com.alma.plateform;
 import java.util.Properties;
 
 /**
- * Created by E122371M on 11/02/16.
+ * Classe représentant un plugin
  */
 public class Plugin {
 

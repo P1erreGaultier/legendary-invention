@@ -1,7 +1,7 @@
-package com.alma.plateform;
+package com.alma.plateform.factories;
 
 /**
- * Created by E15A202A on 22/02/16.
+ * Classe représentant une fabrique classique de plugins
  */
 public class ClassicFactory implements Factory{
 
