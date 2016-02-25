@@ -11,7 +11,7 @@ name=JavaBean;class=com.alma.plateform.JavaBean;classpath=/comptes/E122371M/toto
 
 API de la plateforme :
 
-En bref:  La plateforme est une classe singleton qui suppoorte un certain nombre extensible de plugins.
+En bref:  La classe Plateform est une classe singleton qui supporte un certain nombre extensible de plugins.
 Details:
 - Attributs : 
 - Méthodes :
