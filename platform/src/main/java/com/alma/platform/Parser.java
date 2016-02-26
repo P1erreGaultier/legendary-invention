@@ -1,6 +1,7 @@
 package com.alma.platform;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,5 +37,16 @@ public class Parser {
 		reader.close();
 		return res;
 	}
+
+    public Properties parseConfig(String configFile) throws IOException {
+        Properties config = new Properties();
+
+        FileReader fileReader = new FileReader(configFile);
+        BufferedReader reader = new BufferedReader(fileReader);
+
+        config.load(reader);
+
+        return config;
+    }
 
 }

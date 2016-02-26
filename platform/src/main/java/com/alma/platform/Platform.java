@@ -57,9 +57,11 @@ public class Platform {
 
     public static void main(String[] args) {
         try {
+            Parser p = new Parser();
+            System.out.println(p.parseConfig("src/main/resources/config.properties"));
             JavaBean jb = (JavaBean) Platform.getInstance().getExtension("JavaBean");
             System.out.println(jb);
-        } catch (ClassNotFoundException | IllegalAccessException | MalformedURLException | InstantiationException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | IOException e) {
             e.printStackTrace();
         }
     }
