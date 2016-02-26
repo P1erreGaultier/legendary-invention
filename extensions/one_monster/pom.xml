@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>onemonster</groupId>
-  <artifactId>legendary-invention-extension-one_monster</artifactId>
+  <groupId>com.extensions.onemonster</groupId>
+  <artifactId>legendary-invention-application</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>legendary-invention-extension-one_monster</name>
+  <name>legendary-invention-application</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -35,6 +35,13 @@
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.alma.application</groupId>
+      <artifactId>legendary-invention-application</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/src/main/lib/legendary-invention-application-1.0-SNAPSHOT.jar</systemPath>
     </dependency>
   </dependencies>
 </project>

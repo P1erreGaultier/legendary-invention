@@ -1,5 +1,5 @@
 
-package com.onemonster;
+package com.extensions.onemonster;
 
 import java.util.Random;
 
@@ -39,16 +39,16 @@ public class Monster {
         m.setHp(1+randomgenerator.nextInt(20));
         switch (randomgenerator.nextInt(4)){
             case 0:
-                m.setImage("src/main/java/com/alma/extension/onemonster/352ec142.png");
+                m.setImage("src/main/java/com/extensions/onemonster/352ec142.png");
                 break;
             case 1:
-                m.setImage("src/main/java/com/alma/extension/onemonster/352ec142.png");
+                m.setImage("src/main/java/com/extensions/onemonster/352ec142.png");
                 break;
             case 2:
-                m.setImage("src/main/java/com/alma/extension/onemonster/352ec142.png");
+                m.setImage("src/main/java/com/extensions/onemonster/352ec142.png");
                 break;
             case 3:
-                m.setImage("src/main/java/com/alma/extension/onemonster/352ec142.png");
+                m.setImage("src/main/java/com/extensions/onemonster/352ec142.png");
                 break;
             default:
                 break;
