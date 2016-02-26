@@ -45,11 +45,11 @@
       <scope>test</scope>
     </dependency>
       <dependency>
-        <groupId>com.alma.plateform</groupId>
-        <artifactId>legendary-invention-plateform</artifactId>
+        <groupId>com.alma.platform</groupId>
+        <artifactId>legendary-invention-platform</artifactId>
         <version>1.0-SNAPSHOT</version>
         <scope>system</scope>
-        <systemPath>${basedir}/src/main/lib/legendary-invention-plateform-1.0-SNAPSHOT.jar</systemPath>
+        <systemPath>${basedir}/src/main/lib/legendary-invention-platform-1.0-SNAPSHOT.jar</systemPath>
       </dependency>
   </dependencies>
 </project>

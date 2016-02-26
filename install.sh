@@ -2,13 +2,13 @@
 
 PROJECT_PATH=`pwd`
 
-PLATEFORM_PATH="${PROJECT_PATH}/plateform"
+PLATFORM_PATH="${PROJECT_PATH}/platform"
 APP_PATH="${PROJECT_PATH}/application"
 EXTENSIONS_PATH="${PROJECT_PATH}/extensions"
 
-PLATEFORM_JAR_NAME="legendary-invention-plateform-1.0-SNAPSHOT.jar"
+PLATFORM_JAR_NAME="legendary-invention-platform-1.0-SNAPSHOT.jar"
 APP_JAR_NAME="legendary-invention-application-1.0-SNAPSHOT.jar"
-PLATEFORM_JAR_PATH="${PLATEFORM_PATH}/target/${PLATEFORM_JAR_NAME}"
+PLATFORM_JAR_PATH="${PLATFORM_PATH}/target/${PLATFORM_JAR_NAME}"
 APP_JAR_PATH="${APP_PATH}/target/${APP_JAR_NAME}"
 
 # check if maven is installed
@@ -24,9 +24,9 @@ if [ ! -d "$APP_PATH" ]; then
   exit 1
 fi
 
-# check if plateform folder exists
-if [ ! -d "$PLATEFORM_PATH" ]; then
-  echo "Error : the plateform folder doesn't exist. Cannot build without it"
+# check if platform folder exists
+if [ ! -d "$PLATFORM_PATH" ]; then
+  echo "Error : the platform folder doesn't exist. Cannot build without it"
   exit 1
 fi
 
@@ -37,7 +37,7 @@ if [ ! -d "$EXTENSIONS_PATH" ]; then
 fi
 
 # build the plateform
-cd $PLATEFORM_PATH
+cd $PLATFORM_PATH
 mvn clean # clean before installing
 mvn package
 
@@ -47,7 +47,7 @@ if [ ! -d "$APP_PATH/src/main/lib/" ]; then
   mkdir -p $APP_PATH/src/main/lib/
 fi
 # move the required jar file to lib folder
-mv $PLATEFORM_JAR_PATH $APP_PATH/src/main/lib/$PLATEFORM_JAR_NAME
+mv $PLATFORM_JAR_PATH $APP_PATH/src/main/lib/$PLATFORM_JAR_NAME
 cd $APP_PATH
 mvn clean # clean before installing
 mvn package

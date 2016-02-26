@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import com.alma.application.data.IMonster;
-import com.alma.plateform.Plateform;
+import com.alma.platform.Platform;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -20,12 +20,12 @@ import java.io.IOException;
 
 	public class FirstTry extends JFrame {
 
-			Plateform platform;
+			Platform platform;
 			private IMonster m1;
 
 	    public FirstTry() {
 					try{
-						platform = Plateform.getInstance();
+						platform = Platform.getInstance();
 					}catch(Exception e){
 						System.out.println("PROBLEM WHEN LOAD PLATFORM");
 					}

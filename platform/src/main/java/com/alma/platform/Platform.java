@@ -1,7 +1,7 @@
-package com.alma.plateform;
+package com.alma.platform;
 
-import com.alma.plateform.factories.ClassicFactory;
-import com.alma.plateform.factories.Factory;
+import com.alma.platform.factories.ClassicFactory;
+import com.alma.platform.factories.Factory;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -12,14 +12,14 @@ import java.util.Map;
 /**
  * Classe singleton représentant une plateforme de plugins
  */
-public class Plateform {
+public class Platform {
 
-    private static Plateform instance;
+    private static Platform instance;
     private URLClassLoader classLoader;
     private Map<String, Plugin> plugins;
     private Factory facto;
 
-    private Plateform() throws MalformedURLException {
+    private Platform() throws MalformedURLException {
         facto = new ClassicFactory();
         Parser p = new Parser();
         try {
@@ -38,11 +38,11 @@ public class Plateform {
         classLoader = URLClassLoader.newInstance(urls);
     }
 
-    public static Plateform getInstance() throws MalformedURLException {
+    public static Platform getInstance() throws MalformedURLException {
         if(instance == null) {
-            synchronized (Plateform.class) {
+            synchronized (Platform.class) {
                 if(instance == null) {
-                    instance = new Plateform();
+                    instance = new Platform();
                 }
             }
         }
@@ -53,5 +53,14 @@ public class Plateform {
 
         Plugin plugin = plugins.get(extension_name);
         return facto.get(plugin.getProperties().getProperty("class"), classLoader);
+    }
+
+    public static void main(String[] args) {
+        try {
+            JavaBean jb = (JavaBean) Platform.getInstance().getExtension("JavaBean");
+            System.out.println(jb);
+        } catch (ClassNotFoundException | IllegalAccessException | MalformedURLException | InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 }

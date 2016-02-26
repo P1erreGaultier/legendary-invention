@@ -1,4 +1,4 @@
-package com.alma.plateform.factories;
+package com.alma.platform.factories;
 
 /**
  * Interface représentant une fabrique de plugins

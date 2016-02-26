@@ -1,4 +1,4 @@
-package com.alma.plateform.factories;
+package com.alma.platform.factories;
 
 /**
  * Classe représentant une fabrique classique de plugins

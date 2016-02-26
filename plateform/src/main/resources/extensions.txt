@@ -1,1 +1,0 @@
-name=JavaBean;class=com.alma.plateform.JavaBean;classpath=/comptes/E122371M/toto
