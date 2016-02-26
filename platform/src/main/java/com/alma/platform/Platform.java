@@ -3,11 +3,11 @@ package com.alma.platform;
 import com.alma.platform.factories.ClassicFactory;
 import com.alma.platform.factories.Factory;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.net.*;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Classe singleton représentant une plateforme de plugins
@@ -17,22 +17,34 @@ public class Platform {
     private static Platform instance;
     private URLClassLoader classLoader;
     private Map<String, Plugin> plugins;
-    private Factory facto;
+    private Properties config;
+    private Factory factory;
 
     private Platform() throws MalformedURLException {
-        facto = new ClassicFactory();
-        Parser p = new Parser();
+        factory = new ClassicFactory();
+        Parser parser = new Parser();
+
         try {
-            plugins = p.parseIt("src/main/resources/extensions.txt");
+            plugins = parser.parseIt("src/main/resources/extensions.txt");
+            config = parser.parseConfig("src/main/resources/config.properties");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        // TODO check si les variables de config obligatoires sont présentes
+
         // génération des urls du class loader
         int i = 0;
+        File current_directory = new File(System.getProperty("user.dir"));
+        String classpath_prefix = current_directory.getParentFile().toString() + "/" + config.getProperty("extensions_dir");
+
+        if(! classpath_prefix.endsWith("/")) {
+            classpath_prefix += "/";
+        }
+
         URL[] urls = new URL[plugins.size()];
         for(Map.Entry<String, Plugin> plugin : plugins.entrySet()) {
-            urls[i] = new URL("file://" + plugin.getValue().getProperties().getProperty("classpath"));
+            urls[i] = new URL("file://" + classpath_prefix + plugin.getValue().getProperties().getProperty("classpath"));
             i++;
         }
         classLoader = URLClassLoader.newInstance(urls);
@@ -52,13 +64,11 @@ public class Platform {
     public Object getExtension(String extension_name) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
 
         Plugin plugin = plugins.get(extension_name);
-        return facto.get(plugin.getProperties().getProperty("class"), classLoader);
+        return factory.get(plugin.getProperties().getProperty("class"), classLoader);
     }
 
     public static void main(String[] args) {
         try {
-            Parser p = new Parser();
-            System.out.println(p.parseConfig("src/main/resources/config.properties"));
             JavaBean jb = (JavaBean) Platform.getInstance().getExtension("JavaBean");
             System.out.println(jb);
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | IOException e) {
