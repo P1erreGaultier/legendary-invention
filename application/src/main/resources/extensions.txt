@@ -1,1 +1,1 @@
-name=one_monster;class=com.extensions.onemonster.Monster;classpath=/comptes/E122371M/legendary-invention/extensions/one_monster/target/classes/
+name=one_monster;class=com.extensions.onemonster.MonsterFactory;directory=extensions/one_monster/target/classes/

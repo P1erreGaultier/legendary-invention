@@ -3,7 +3,8 @@ package com.alma.application;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import com.alma.application.data.IMonster;
+import com.alma.application.interfaces.IMonster;
+import com.alma.application.interfaces.IMonsterFactory;
 import com.alma.platform.Platform;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -37,17 +38,13 @@ import java.io.IOException;
 					}
             try {
 
-                IMonster facto = (IMonster) platform.getExtension("one_monster");
+				IMonsterFactory facto = (IMonsterFactory) platform.getExtension("one_monster");
                 m1 = facto.createMonster20();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();
             }
 
-            initUI();
+			initUI();
 	    }
 
 	    private void initUI() {

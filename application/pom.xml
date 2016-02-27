@@ -49,7 +49,7 @@
         <artifactId>legendary-invention-platform</artifactId>
         <version>1.0-SNAPSHOT</version>
         <scope>system</scope>
-        <systemPath>${basedir}/src/main/lib/legendary-invention-platform-1.0-SNAPSHOT.jar</systemPath>
+        <systemPath>${basedir}/lib/legendary-invention-platform-1.0-SNAPSHOT.jar</systemPath>
       </dependency>
   </dependencies>
 </project>

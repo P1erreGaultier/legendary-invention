@@ -17,7 +17,6 @@ public class Platform {
     private static Platform instance;
     private URLClassLoader classLoader;
     private Map<String, Plugin> plugins;
-    private Properties config;
     private Factory factory;
 
     private Platform() throws MalformedURLException {
@@ -26,7 +25,6 @@ public class Platform {
 
         try {
             plugins = parser.parseIt("src/main/resources/extensions.txt");
-            config = parser.parseConfig("src/main/resources/config.properties");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,15 +34,11 @@ public class Platform {
         // génération des urls du class loader
         int i = 0;
         File current_directory = new File(System.getProperty("user.dir"));
-        String classpath_prefix = current_directory.getParentFile().toString() + "/" + config.getProperty("extensions_dir");
-
-        if(! classpath_prefix.endsWith("/")) {
-            classpath_prefix += "/";
-        }
+        String classpath_prefix = current_directory.getParentFile().toString() + "/";
 
         URL[] urls = new URL[plugins.size()];
         for(Map.Entry<String, Plugin> plugin : plugins.entrySet()) {
-            urls[i] = new URL("file://" + classpath_prefix + plugin.getValue().getProperties().getProperty("classpath"));
+            urls[i] = new URL("file://" + classpath_prefix + plugin.getValue().getProperties().getProperty("directory"));
             i++;
         }
         classLoader = URLClassLoader.newInstance(urls);

@@ -1,1 +1,1 @@
-name=JavaBean;class=com.alma.platform.JavaBean;classpath=target/classes
+name=JavaBean;class=com.alma.platform.JavaBean;directory=platform/target/classes

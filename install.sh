@@ -43,11 +43,11 @@ mvn package
 
 # build the application
 # if lib directory doesn't exist yet
-if [ ! -d "$APP_PATH/src/main/lib/" ]; then
-  mkdir -p $APP_PATH/src/main/lib/
+if [ ! -d "$APP_PATH/lib/" ]; then
+  mkdir -p $APP_PATH/lib/
 fi
 # move the required jar file to lib folder
-mv $PLATFORM_JAR_PATH $APP_PATH/src/main/lib/$PLATFORM_JAR_NAME
+cp $PLATFORM_JAR_PATH $APP_PATH/lib/$PLATFORM_JAR_NAME
 cd $APP_PATH
 mvn clean # clean before installing
 mvn package
@@ -56,11 +56,11 @@ mvn package
 for extension in $EXTENSIONS_PATH/*
 do
 	# if lib directory doesn't exist yet
-	if [ ! -d "$extension/src/main/lib/" ]; then
-	  mkdir -p $extension/src/main/lib/
+	if [ ! -d "$extension/lib/" ]; then
+	  mkdir -p $extension/lib/
 	fi
 	# move the required jar file to lib folder
-	mv $APP_JAR_PATH $extension/src/main/lib/$APP_JAR_NAME
+	cp $APP_JAR_PATH $extension/lib/$APP_JAR_NAME
 	cd $extension
 	mvn clean # clean before installing
 	mvn package
