@@ -1,13 +1,15 @@
 package com.alma.platform;
 
+import com.alma.platform.exceptions.PropertyNotFound;
 import com.alma.platform.factories.ClassicFactory;
 import com.alma.platform.factories.Factory;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Classe singleton représentant une plateforme de plugins
@@ -19,7 +21,7 @@ public class Platform {
     private Map<String, Plugin> plugins;
     private Factory factory;
 
-    private Platform() throws MalformedURLException {
+    private Platform() throws MalformedURLException, PropertyNotFound {
         factory = new ClassicFactory();
         Parser parser = new Parser();
 
@@ -38,13 +40,13 @@ public class Platform {
 
         URL[] urls = new URL[plugins.size()];
         for(Map.Entry<String, Plugin> plugin : plugins.entrySet()) {
-            urls[i] = new URL("file://" + classpath_prefix + plugin.getValue().getProperties().getProperty("directory"));
+            urls[i] = new URL("file://" + classpath_prefix + plugin.getValue().getDirectory());
             i++;
         }
         classLoader = URLClassLoader.newInstance(urls);
     }
 
-    public static Platform getInstance() throws MalformedURLException {
+    public static Platform getInstance() throws MalformedURLException, PropertyNotFound {
         if(instance == null) {
             synchronized (Platform.class) {
                 if(instance == null) {
@@ -58,14 +60,37 @@ public class Platform {
     public Object getExtension(String extension_name) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
 
         Plugin plugin = plugins.get(extension_name);
-        return factory.get(plugin.getProperties().getProperty("class"), classLoader);
+        return factory.get(plugin.getClassName(), classLoader);
+    }
+
+    public List<String> getAutorunExtensions() {
+        List<String> results = new ArrayList<>();
+        for(Map.Entry<String, Plugin> plugin : plugins.entrySet()) {
+            if(plugin.getValue().hasOption("autorun")) {
+                if(plugin.getValue().getOption("autorun").equals("true")) {
+                    results.add(plugin.getKey());
+                }
+            }
+        }
+        return results;
+    }
+
+    public List<String> getByInterface(String interface_name) {
+        List<String> results = new ArrayList<>();
+        for(Map.Entry<String, Plugin> plugin : plugins.entrySet()) {
+            if(plugin.getValue().getInterface().equals(interface_name)) {
+                results.add(plugin.getKey());
+            }
+        }
+        return results;
     }
 
     public static void main(String[] args) {
         try {
-            JavaBean jb = (JavaBean) Platform.getInstance().getExtension("JavaBean");
-            System.out.println(jb);
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | IOException e) {
+            for(String plugin_name: Platform.getInstance().getAutorunExtensions()) {
+                Platform.getInstance().getExtension(plugin_name);
+            }
+        } catch (MalformedURLException | IllegalAccessException | InstantiationException | ClassNotFoundException | PropertyNotFound e) {
             e.printStackTrace();
         }
     }
