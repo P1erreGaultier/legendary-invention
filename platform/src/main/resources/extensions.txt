@@ -1,1 +1,1 @@
-name=JavaBean;class=com.alma.platform.JavaBean;directory=platform/target/classes
+name=JavaBean;class=com.alma.platform.JavaBean;interface=com.alma.application.IMonsterFactory;directory=platform/target/classes;autorun=true
