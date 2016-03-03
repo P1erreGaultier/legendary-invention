@@ -6,6 +6,8 @@ import javax.swing.*;
 import com.alma.application.interfaces.IMonster;
 import com.alma.application.interfaces.IMonsterFactory;
 import com.alma.platform.Platform;
+import com.alma.platform.exceptions.PropertyNotFound;
+
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -18,8 +20,9 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
-	public class FirstTry extends JFrame {
+public class FirstTry extends JFrame {
 
 			Platform platform;
 			private IMonster m1;
@@ -38,9 +41,9 @@ import java.io.IOException;
 					}
             try {
 
-				IMonsterFactory facto = (IMonsterFactory) platform.getExtension("one_monster");
+				IMonsterFactory facto = (IMonsterFactory) Platform.getInstance().getExtension("one_monster");
                 m1 = facto.createMonster20();
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | PropertyNotFound e) {
                 e.printStackTrace();
             }
 

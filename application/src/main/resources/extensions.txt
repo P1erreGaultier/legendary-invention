@@ -1,1 +1,1 @@
-name=one_monster;class=com.extensions.onemonster.MonsterFactory;directory=extensions/one_monster/target/classes/
+name=one_monster;class=com.extensions.onemonster.MonsterFactory;interface=com.alma.application.interfaces.IMonsterFactory;directory=extensions/one_monster/target/classes/
