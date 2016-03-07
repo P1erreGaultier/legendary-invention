@@ -21,31 +21,38 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
+import java.util.Random;
 
-public class FirstTry extends JFrame {
+public class App extends JFrame {
 
-			Platform platform;
-			private IMonster m1;
+	Platform platform;
+	private IMonster m1;
+	private List<IMonsterFactory> factories;
 
-	    public FirstTry() {
-					try{
-						platform = Platform.getInstance();
-					}catch(Exception e){
-						System.out.println("PROBLEM WHEN LOAD PLATFORM");
-					}
+	    public App() {
+			try {
+				platform = Platform.getInstance();
+			} catch (Exception e){
+				System.out.println("PROBLEM WHEN LOAD PLATFORM");
+			}
 
-					if(platform != null){
-						System.out.println("PLATFORM LOADED !");
-					}else{
-						System.out.println("PLATFORM NOTLOADED !");
-					}
+			if(platform != null){
+				System.out.println("PLATFORM LOADED !");
+			} else {
+				System.out.println("PLATFORM NOTLOADED !");
+			}
             try {
-
-				IMonsterFactory facto = (IMonsterFactory) Platform.getInstance().getExtension("one_monster");
-                m1 = facto.createMonster20();
+                for(String factory_name: Platform.getInstance().getByInterface("com.application.interfaces.monster.IMonsterFactory")) {
+                    factories.add((IMonsterFactory) Platform.getInstance().getExtension(factory_name));
+                }
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | PropertyNotFound e) {
                 e.printStackTrace();
             }
+
+            // on tire au random un producteur
+            Random randomgenerator = new Random();
+            m1 = factories.get(randomgenerator.nextInt(factories.size())).createMonster20();
 
 			initUI();
 
@@ -113,17 +120,4 @@ public class FirstTry extends JFrame {
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        setLocationRelativeTo(null);
 	    }
-
-	    
-	
-	 public static void main(String[] args) {
-	        EventQueue.invokeLater(new Runnable() {
-	        
-	            @Override
-	            public void run() {
-	                FirstTry ex = new FirstTry();
-	                ex.setVisible(true);
-	            }
-	        });
-	    }
-	}
+}
