@@ -1,1 +1,2 @@
-name=JavaBean;class=com.alma.platform.JavaBean;interface=com.alma.application.IMonsterFactory;directory=platform/target/classes;autorun=true
+name=app;class=com.alma.application.FirstTry;interface=com.alma.application.interfaces.IMonsterFactory;directory=application/target/classes/;autorun=true
+name=one_monster;class=com.extensions.onemonster.MonsterFactory;interface=com.alma.application.interfaces.IMonsterFactory;directory=extensions/one_monster/target/classes/

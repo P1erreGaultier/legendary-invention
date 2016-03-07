@@ -48,6 +48,8 @@ public class FirstTry extends JFrame {
             }
 
 			initUI();
+
+           setVisible(true);
 	    }
 
 	    private void initUI() {
@@ -115,7 +117,6 @@ public class FirstTry extends JFrame {
 	    
 	
 	 public static void main(String[] args) {
-
 	        EventQueue.invokeLater(new Runnable() {
 	        
 	            @Override
