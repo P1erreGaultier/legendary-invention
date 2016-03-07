@@ -1,8 +1,8 @@
 package com.extensions.onemonster;
 
 import java.util.Random;
-import com.alma.application.interfaces.IMonster;
-import com.alma.application.interfaces.IMonsterFactory;
+import com.alma.application.interfaces.monster.IMonster;
+import com.alma.application.interfaces.monster.IMonsterFactory;
 
 public class MonsterFactory implements IMonsterFactory {
 

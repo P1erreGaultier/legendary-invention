@@ -21,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -31,19 +32,10 @@ public class App extends JFrame {
 	private List<IMonsterFactory> factories;
 
 	    public App() {
-			try {
-				platform = Platform.getInstance();
-			} catch (Exception e){
-				System.out.println("PROBLEM WHEN LOAD PLATFORM");
-			}
+            factories = new ArrayList<>();
 
-			if(platform != null){
-				System.out.println("PLATFORM LOADED !");
-			} else {
-				System.out.println("PLATFORM NOTLOADED !");
-			}
             try {
-                for(String factory_name: Platform.getInstance().getByInterface("com.application.interfaces.monster.IMonsterFactory")) {
+                for(String factory_name: Platform.getInstance().getByInterface("com.alma.application.interfaces.monster.IMonsterFactory")) {
                     factories.add((IMonsterFactory) Platform.getInstance().getExtension(factory_name));
                 }
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | PropertyNotFound e) {
@@ -53,6 +45,7 @@ public class App extends JFrame {
             // on tire au random un producteur
             Random randomgenerator = new Random();
             m1 = factories.get(randomgenerator.nextInt(factories.size())).createMonster20();
+            m1.setHp(10);
 
 			initUI();
 

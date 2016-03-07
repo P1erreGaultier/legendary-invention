@@ -58,7 +58,6 @@ public class Platform {
     }
 
     public Object getExtension(String extension_name) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-
         Plugin plugin = plugins.get(extension_name);
         return factory.get(plugin.getClassName(), classLoader);
     }

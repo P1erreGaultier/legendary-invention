@@ -1,7 +1,7 @@
 
 package com.extensions.onemonster;
 
-import com.alma.application.interfaces.IMonster;
+import com.alma.application.interfaces.monster.IMonster;
 
 public class Monster implements IMonster{
 

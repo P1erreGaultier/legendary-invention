@@ -1,2 +1,2 @@
-name=app;class=com.alma.application.FirstTry;interface=com.alma.application.interfaces.IMonsterFactory;directory=application/target/classes/;autorun=true
-name=one_monster;class=com.extensions.onemonster.MonsterFactory;interface=com.alma.application.interfaces.IMonsterFactory;directory=extensions/one_monster/target/classes/
+name=app;class=com.alma.application.App;interface=none;directory=application/target/classes/;autorun=true
+name=one_monster;class=com.extensions.onemonster.MonsterFactory;interface=com.alma.application.interfaces.monster.IMonsterFactory;directory=extensions/one_monster/target/classes/
