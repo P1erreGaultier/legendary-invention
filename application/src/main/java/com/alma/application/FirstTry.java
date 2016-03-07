@@ -3,8 +3,8 @@ package com.alma.application;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import com.alma.application.interfaces.IMonster;
-import com.alma.application.interfaces.IMonsterFactory;
+import com.alma.application.interfaces.monster.IMonster;
+import com.alma.application.interfaces.monster.IMonsterFactory;
 import com.alma.platform.Platform;
 import com.alma.platform.exceptions.PropertyNotFound;
 

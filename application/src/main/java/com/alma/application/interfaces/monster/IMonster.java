@@ -1,4 +1,4 @@
-package com.alma.application.interfaces;
+package com.alma.application.interfaces.monster;
 
 
 public interface IMonster {
