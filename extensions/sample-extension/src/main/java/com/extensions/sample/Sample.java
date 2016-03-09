@@ -1,10 +1,8 @@
+package com.extensions.EXTNAME;
 
-package com.extensions.sample;
+public class CLASSNAME {
 
-public class Sample {
-
-    public Sample() {
+    public CLASSNAME() {
         // ...
     }
 }
-

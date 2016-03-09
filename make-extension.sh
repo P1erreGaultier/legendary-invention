@@ -1,24 +1,23 @@
 #!/bin/bash
-# Script d'installation pour la plateforme à plugin Legendary-invention
+# Script de création d'un nouveau plugin pour la plateforme à plugin Legendary-invention
 # Auteurs : Pierre gaultier, Arnaud Grall, Nedhir Messaoud, Thomas Minier
 
 # Variables to store various paths
 PROJECT_PATH=`pwd`
 
-PLATFORM_PATH="${PROJECT_PATH}/platform"
 APP_PATH="${PROJECT_PATH}/application"
 EXTENSIONS_PATH="${PROJECT_PATH}/extensions"
 
 APP_JAR_NAME="legendary-invention-application-1.0-SNAPSHOT.jar"
 APP_JAR_PATH="${APP_PATH}/target/${APP_JAR_NAME}"
-PLATFORM_JAR_NAME="legendary-invention-platform-1.0-SNAPSHOT.jar"
 PLATFORM_JAR_PATH="${PLATFORM_PATH}/target/${PLATFORM_JAR_NAME}"
 
+SAMPLE_PATH="${EXTENSIONS_PATH}/sample-extension"
+
 # variables to indicate which part of the project to build
-BUILD_PLATFORM=false
-BUILD_APP=false
-BUILD_EXTENSIONS=false
 SHOW_HELP=false
+EXT_NAME=""
+MAIN_CLASS_NAME=""
 
 # check if maven is installed
 if ! hash mvn 2>/dev/null; then
@@ -29,33 +28,24 @@ fi
 
 # check if app folder exists
 if [ ! -d "$APP_PATH" ]; then
-  echo "Error : the application folder doesn't exist. Cannot build without it"
-  exit 1
-fi
-
-# check if platform folder exists
-if [ ! -d "$PLATFORM_PATH" ]; then
-  echo "Error : the platform folder doesn't exist. Cannot build without it"
+  echo "Error : the application folder doesn't exist. Cannot work without it"
   exit 1
 fi
 
 # check if extensions folder exists
 if [ ! -d "$EXTENSIONS_PATH" ]; then
-  echo "Error : the extensions folder doesn't exist. Cannot build without it"
+  echo "Error : the extensions folder doesn't exist. Cannot work without it"
   exit 1
 fi
 
 # fetch all the option of the script
-while getopts "paeh" opt; do
+while getopts "hn:c:" opt; do
 	case $opt in
-		p)
-			BUILD_PLATFORM=true
+		n)
+			EXT_NAME=$OPTARG
 			;;
-		a)
-			BUILD_APP=true
-			;;
-		e)
-			BUILD_EXTENSIONS=true
+		c)
+			MAIN_CLASS_NAME=$OPTARG
 			;;
 		h)
 			SHOW_HELP=true
@@ -67,11 +57,15 @@ while getopts "paeh" opt; do
 	esac
 done
 
-# if no options were used, we build everything
-if [ $# -eq 0 ]; then
-	BUILD_PLATFORM=true
-	BUILD_APP=true
-	BUILD_EXTENSIONS=true
+# if the required options weren't used
+if [ "$EXT_NAME" = "" ]; then
+	echo "Error : missing argument -n"
+	exit 1
+fi
+
+if [ "$MAIN_CLASS_NAME" = "" ]; then
+	echo "Error : missing argument -c"
+	exit 1
 fi
 
 # Show help if asked, then exit
@@ -90,38 +84,26 @@ if $SHOW_HELP; then
 	exit 0
 fi
 
-# build the plateform if asked
-if $BUILD_PLATFORM; then
-	cd $PLATFORM_PATH
-	mvn clean # clean before installing
-	mvn package
+MAIN_PACK_PATH="${EXTENSIONS_PATH}/${EXT_NAME}/src/main/java/com/extensions/${EXT_NAME}"
+MAIN_CLASS_PATH="${MAIN_PACK_PATH}/${MAIN_CLASS_NAME}.java"
+
+# copy the files
+if [ ! -d "$EXTENSIONS_PATH/$EXT_NAME" ]; then
+	cp -r $SAMPLE_PATH $EXTENSIONS_PATH/$EXT_NAME
 fi
 
-# build the application if asked
-if $BUILD_APP; then
-	# if lib directory doesn't exist yet
-	if [ ! -d "$APP_PATH/lib/" ]; then
-	  mkdir -p $APP_PATH/lib/
-	fi
-	# move the required jar file to lib folder
-	cp $PLATFORM_JAR_PATH $APP_PATH/lib/$PLATFORM_JAR_NAME
-	cd $APP_PATH
-	mvn clean # clean before installing
-	mvn package
-fi
+# create the main class
+mkdir $MAIN_PACK_PATH
+mv $EXTENSIONS_PATH/$EXT_NAME/src/main/java/com/extensions/sample/Sample.java $MAIN_CLASS_PATH
+rm -rf $EXTENSIONS_PATH/$EXT_NAME/src/main/java/com/extensions/sample/
 
-# build all the extensions if asked
-if $BUILD_EXTENSIONS; then
-	for extension in $EXTENSIONS_PATH/*
-	do
-		# if lib directory doesn't exist yet
-		if [ ! -d "$extension/lib/" ]; then
-		  mkdir -p $extension/lib/
-		fi
-		# move the required jar file to lib folder
-		cp $APP_JAR_PATH $extension/lib/$APP_JAR_NAME
-		cd $extension
-		mvn clean # clean before installing
-		mvn package
-	done
+# fill the templates
+sed -i s/EXTNAME/${EXT_NAME}/g $MAIN_CLASS_PATH
+sed -i s/CLASSNAME/${MAIN_CLASS_NAME}/g $MAIN_CLASS_PATH
+sed -i s/EXTNAME/${EXT_NAME}/g $EXTENSIONS_PATH/$EXT_NAME/pom.xml
+
+# install the dependancy
+if [ ! -d "$EXTENSIONS_PATH/$EXT_NAME/lib" ]; then
+	rm -rf $EXTENSIONS_PATH/$EXT_NAME/lib
 fi
+cp $APP_JAR_PATH $EXTENSIONS_PATH/$EXT_NAME/lib/$APP_JAR_NAME
