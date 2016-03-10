@@ -3,6 +3,7 @@ package com.alma.application;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import com.alma.application.interfaces.handler.IClickHandler;
 import com.alma.application.interfaces.monster.IMonster;
 import com.alma.application.interfaces.monster.IMonsterFactory;
 import com.alma.platform.Platform;
@@ -30,13 +31,19 @@ public class App extends JFrame {
 	Platform platform;
 	private IMonster m1;
 	private List<IMonsterFactory> factories;
+	private List<IClickHandler> handlers;
 
 	    public App() {
             factories = new ArrayList<>();
+            handlers = new ArrayList<>();
 
             try {
                 for(String factory_name: Platform.getInstance().getByInterface("com.alma.application.interfaces.monster.IMonsterFactory")) {
                     factories.add((IMonsterFactory) Platform.getInstance().getExtension(factory_name));
+                }
+
+                for(String handler_name : Platform.getInstance().getByInterface("com.alma.application.interfaces.handler.IClickHandler")) {
+                    handlers.add((IClickHandler) Platform.getInstance().getExtension(handler_name));
                 }
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | PropertyNotFound e) {
                 e.printStackTrace();
@@ -102,6 +109,10 @@ public class App extends JFrame {
 	            	}
 	            }
 	          });
+
+            for(IClickHandler handler : handlers) {
+                handler.setHandler(label);
+            }
 	        panel.add(label);
 	        panel.add(area);
 
