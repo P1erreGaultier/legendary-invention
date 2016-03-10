@@ -3,7 +3,7 @@ package com.alma.platform.factories;
 /**
  * Classe représentant une fabrique classique de plugins
  */
-public class ClassicFactory implements Factory{
+public class ClassicFactory implements IFactory {
 
     @Override
     public Object get(String extension_name, ClassLoader loader) throws ClassNotFoundException, IllegalAccessException, InstantiationException {

@@ -2,7 +2,8 @@ package com.alma.platform;
 
 import com.alma.platform.exceptions.PropertyNotFound;
 import com.alma.platform.factories.ClassicFactory;
-import com.alma.platform.factories.Factory;
+import com.alma.platform.factories.IFactory;
+import com.alma.platform.factories.MonitorProxyFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,10 +20,10 @@ public class Platform {
     private static Platform instance;
     private URLClassLoader classLoader;
     private Map<String, Plugin> plugins;
-    private Factory factory;
+    private IFactory extensionFactory;
 
     private Platform() throws MalformedURLException, PropertyNotFound {
-        factory = new ClassicFactory();
+        extensionFactory = new ClassicFactory();
         Parser parser = new Parser();
 
         try {
@@ -59,7 +60,11 @@ public class Platform {
 
     public Object getExtension(String extension_name) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         Plugin plugin = plugins.get(extension_name);
-        return factory.get(plugin.getClassName(), classLoader);
+        return extensionFactory.get(plugin.getClassName(), classLoader);
+    }
+
+    public void monitoringOn() {
+        extensionFactory = new MonitorProxyFactory();
     }
 
     public List<String> getAutorunExtensions() {
@@ -86,6 +91,7 @@ public class Platform {
 
     public static void main(String[] args) {
         try {
+            //Platform.getInstance().monitoringOn();
             for(String plugin_name: Platform.getInstance().getAutorunExtensions()) {
                 Platform.getInstance().getExtension(plugin_name);
             }
