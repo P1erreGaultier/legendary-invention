@@ -8,10 +8,6 @@ PROJECT_PATH=`pwd`
 APP_PATH="${PROJECT_PATH}/application"
 EXTENSIONS_PATH="${PROJECT_PATH}/extensions"
 
-APP_JAR_NAME="legendary-invention-application-1.0-SNAPSHOT.jar"
-APP_JAR_PATH="${APP_PATH}/target/${APP_JAR_NAME}"
-PLATFORM_JAR_PATH="${PLATFORM_PATH}/target/${PLATFORM_JAR_NAME}"
-
 SAMPLE_PATH="${EXTENSIONS_PATH}/sample-extension"
 
 # variables to indicate which part of the project to build
@@ -96,9 +92,3 @@ rm -rf $EXTENSIONS_PATH/$EXT_NAME/src/main/java/com/extensions/sample/
 sed -i s/EXTNAME/${EXT_NAME}/g $MAIN_CLASS_PATH
 sed -i s/CLASSNAME/${MAIN_CLASS_NAME}/g $MAIN_CLASS_PATH
 sed -i s/EXTNAME/${EXT_NAME}/g $EXTENSIONS_PATH/$EXT_NAME/pom.xml
-
-# install the dependancy
-if [ ! -d "$EXTENSIONS_PATH/$EXT_NAME/lib" ]; then
-	rm -rf $EXTENSIONS_PATH/$EXT_NAME/lib
-fi
-cp $APP_JAR_PATH $EXTENSIONS_PATH/$EXT_NAME/lib/$APP_JAR_NAME

@@ -9,11 +9,6 @@ PLATFORM_PATH="${PROJECT_PATH}/platform"
 APP_PATH="${PROJECT_PATH}/application"
 EXTENSIONS_PATH="${PROJECT_PATH}/extensions"
 
-APP_JAR_NAME="legendary-invention-application-1.0-SNAPSHOT.jar"
-APP_JAR_PATH="${APP_PATH}/target/${APP_JAR_NAME}"
-PLATFORM_JAR_NAME="legendary-invention-platform-1.0-SNAPSHOT.jar"
-PLATFORM_JAR_PATH="${PLATFORM_PATH}/target/${PLATFORM_JAR_NAME}"
-
 # variables to indicate which part of the project to build
 BUILD_PLATFORM=false
 BUILD_APP=false
@@ -99,12 +94,6 @@ fi
 
 # build the application if asked
 if $BUILD_APP; then
-	# if lib directory doesn't exist yet
-	if [ ! -d "$APP_PATH/lib/" ]; then
-	  mkdir -p $APP_PATH/lib/
-	fi
-	# move the required jar file to lib folder
-	cp $PLATFORM_JAR_PATH $APP_PATH/lib/$PLATFORM_JAR_NAME
 	cd $APP_PATH
 	mvn clean # clean before installing
 	mvn package
@@ -114,12 +103,6 @@ fi
 if $BUILD_EXTENSIONS; then
 	for extension in $EXTENSIONS_PATH/*
 	do
-		# if lib directory doesn't exist yet
-		if [ ! -d "$extension/lib/" ]; then
-		  mkdir -p $extension/lib/
-		fi
-		# move the required jar file to lib folder
-		cp $APP_JAR_PATH $extension/lib/$APP_JAR_NAME
 		cd $extension
 		mvn clean # clean before installing
 		mvn package

@@ -41,7 +41,14 @@
       <artifactId>legendary-invention-application</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/legendary-invention-application-1.0-SNAPSHOT.jar</systemPath>
+      <systemPath>${basedir}/../../application/target/legendary-invention-application-1.0-SNAPSHOT.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.alma.platform</groupId>
+      <artifactId>legendary-invention-platform</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/../../platform/target/legendary-invention-platform-1.0-SNAPSHOT.jar</systemPath>
     </dependency>
   </dependencies>
 </project>
