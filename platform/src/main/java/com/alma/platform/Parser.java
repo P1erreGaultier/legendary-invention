@@ -1,6 +1,7 @@
 package com.alma.platform;
 
 import com.alma.platform.exceptions.PropertyNotFound;
+import com.alma.platform.plugins.Plugin;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

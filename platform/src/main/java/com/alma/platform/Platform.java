@@ -4,6 +4,8 @@ import com.alma.platform.exceptions.PropertyNotFound;
 import com.alma.platform.factories.ClassicFactory;
 import com.alma.platform.factories.IFactory;
 import com.alma.platform.factories.MonitorProxyFactory;
+import com.alma.platform.monitor.Monitor;
+import com.alma.platform.plugins.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,18 +20,25 @@ import java.util.Map;
 public class Platform {
 
     private static Platform instance;
+    private Monitor moniteur;
     private URLClassLoader classLoader;
     private Map<String, Plugin> plugins;
     private IFactory extensionFactory;
 
     private Platform() throws MalformedURLException, PropertyNotFound {
         extensionFactory = new ClassicFactory();
+        moniteur = Monitor.getInstance();
         Parser parser = new Parser();
 
         try {
             plugins = parser.parseIt("src/main/resources/extensions.txt");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        // on enregistre les plugins auprès du moniteur
+        for(Map.Entry<String, Plugin> plugin : plugins.entrySet()) {
+            moniteur.registerPlugin(plugin.getValue());
         }
 
         // TODO check si les variables de config obligatoires sont présentes
@@ -47,6 +56,12 @@ public class Platform {
         classLoader = URLClassLoader.newInstance(urls);
     }
 
+    /**
+     * Méthode qui retourne l'instance de la plateforme
+     * @return
+     * @throws MalformedURLException
+     * @throws PropertyNotFound
+     */
     public static Platform getInstance() throws MalformedURLException, PropertyNotFound {
         if(instance == null) {
             synchronized (Platform.class) {
@@ -58,11 +73,23 @@ public class Platform {
         return instance;
     }
 
+    /**
+     * Méthoide qui charge et retourne une extension précise
+     * @param extension_name Le nom de l'extension que l'on veut récupérer
+     * @return
+     * @throws ClassNotFoundException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
     public Object getExtension(String extension_name) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         Plugin plugin = plugins.get(extension_name);
+        Monitor.getInstance().reportNewInstance(plugin.getName());
         return extensionFactory.get(plugin.getClassName(), classLoader);
     }
 
+    /**
+     * Méthode qui active le monitoring complet des prochaines extensions à être instanciées
+     */
     public void monitoringOn() {
         extensionFactory = new MonitorProxyFactory();
     }
@@ -98,5 +125,7 @@ public class Platform {
         } catch (MalformedURLException | IllegalAccessException | InstantiationException | ClassNotFoundException | PropertyNotFound e) {
             e.printStackTrace();
         }
+
+        System.out.println("Infos : " + Monitor.getInstance().getPluginInfos("app"));
     }
 }
