@@ -12,7 +12,7 @@ public class MonsterFactory implements IMonsterFactory {
     public IMonster createMonster20(){
         Random randomgenerator = new Random();
         IMonster m = new Monster();
-
+        m.setHp(randomgenerator.nextInt(20));
         switch (randomgenerator.nextInt(4)){
             case 0:
                 m.setImage(this.getClass().getResource("bob.png").getPath());
@@ -32,6 +32,9 @@ public class MonsterFactory implements IMonsterFactory {
             default:
                 break;
         }
+
+
+
         return m;
     }
 }

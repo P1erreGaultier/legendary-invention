@@ -10,7 +10,6 @@ import com.alma.platform.Platform;
 import com.alma.platform.exceptions.PropertyNotFound;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -52,7 +51,6 @@ public class App extends JFrame {
             // on tire au random un producteur
             Random randomgenerator = new Random();
             m1 = factories.get(randomgenerator.nextInt(factories.size())).createMonster20();
-            m1.setHp(10);
 
 			initUI();
 
@@ -101,11 +99,12 @@ public class App extends JFrame {
 	        
 	        label.addMouseListener( new MouseAdapter() {
 	            public void mouseClicked(MouseEvent e) {
-	            	if((Integer.parseInt(area.getText())-1)>=0){
-	            		area.setText(Integer.toString((Integer.parseInt(area.getText())-1))); //ligne du vomi
+                    m1.setHp(m1.getHp()-1);
+	            	if(m1.getHp()>=0){
+	            		area.setText(Integer.toString(m1.getHp()));
 	            	}
 	            	if(area.getText().equals("0")){
-	            		JOptionPane.showMessageDialog(null, "My Goodness, THIS IS THE GGWP");
+	            		JOptionPane.showMessageDialog(null, "Victory!!!");
 	            	}
 	            }
 	          });
