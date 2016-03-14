@@ -9,7 +9,7 @@ import java.util.List;
 public class Monitor {
 
     private static Monitor instance;
-    private List<MonitorObserver> logObservers;
+    private List<LogObserver> logObservers;
     private List<String> logs;
 
     private Monitor() {
@@ -29,28 +29,28 @@ public class Monitor {
     }
 
     /**
-     * Notifie tous les observeurs
+     * Notifie tous les observeurs de l'ajout d'un log
      */
     private void triggerLogObservers(String log) {
-        for(MonitorObserver observer : logObservers) {
-            observer.execute();
+        for(LogObserver observer : logObservers) {
+            observer.execute(log);
         }
     }
 
     public void addLog(String log) {
         logs.add(log);
-        //triggerLogObservers();
+        triggerLogObservers(log);
     }
 
-    public void addLogListener(MonitorObserver observer) {
+    public void addLogListener(LogObserver observer) {
         logObservers.add(observer);
     }
 
     public static void main(String[] args) {
-        Monitor.getInstance().addLogListener(new MonitorObserver() {
+        Monitor.getInstance().addLogListener(new LogObserver() {
             @Override
-            public void execute() {
-                System.out.println("moniteur ok");
+            public void execute(String log) {
+                System.out.println("log : " + log);
             }
         });
 
