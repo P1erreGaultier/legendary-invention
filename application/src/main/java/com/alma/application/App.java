@@ -31,25 +31,28 @@ public class App extends JFrame {
 	private IMonster m1;
 	private List<IMonsterFactory> factories;
 	private List<IClickHandler> handlers;
+    private Random randomgenerator;
+    public static final String extpath = "com.alma.application.interfaces";
 
 	    public App() {
             factories = new ArrayList<>();
             handlers = new ArrayList<>();
 
             try {
-                for(String factory_name: Platform.getInstance().getByInterface("com.alma.application.interfaces.monster.IMonsterFactory")) {
+                for(String factory_name: Platform.getInstance().getByInterface(extpath+".monster.IMonsterFactory")) {
                     factories.add((IMonsterFactory) Platform.getInstance().getExtension(factory_name));
                 }
 
-                for(String handler_name : Platform.getInstance().getByInterface("com.alma.application.interfaces.handler.IClickHandler")) {
+                for(String handler_name : Platform.getInstance().getByInterface(extpath+".handler.IClickHandler")) {
                     handlers.add((IClickHandler) Platform.getInstance().getExtension(handler_name));
                 }
+
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | PropertyNotFound e) {
                 e.printStackTrace();
             }
 
             // on tire au random un producteur
-            Random randomgenerator = new Random();
+            randomgenerator = new Random();
             m1 = factories.get(randomgenerator.nextInt(factories.size())).createMonster20();
 
 			initUI();
@@ -87,17 +90,19 @@ public class App extends JFrame {
 	        final JTextArea area = new JTextArea(Integer.toString(m1.getHp()));
 	        area.setPreferredSize(new Dimension(100, 100));
 	        area.setFont(new Font("Calibri",Font.PLAIN,80));
-	        
+	        area.setEditable(false);
 	        JLabel label = null;
-	        try {
-	            BufferedImage img = ImageIO.read(new File(m1.getImage()));
+            BufferedImage img= null;
+            try {
+	            img = ImageIO.read(new File(m1.getImage()));
 	            ImageIcon icon = new ImageIcon(img);
 	            label = new JLabel(icon);
 	         } catch (IOException e) {
 	            e.printStackTrace();
 	         }
-	        
-	        label.addMouseListener( new MouseAdapter() {
+
+            assert(label!=null);
+	        label.addMouseListener( new MouseAdapter(){
 	            public void mouseClicked(MouseEvent e) {
                     m1.setHp(m1.getHp()-1);
 	            	if(m1.getHp()>=0){
@@ -105,7 +110,9 @@ public class App extends JFrame {
 	            	}
 	            	if(area.getText().equals("0")){
 	            		JOptionPane.showMessageDialog(null, "Victory!!!");
-	            	}
+                        m1 = factories.get(randomgenerator.nextInt(factories.size())).createMonster20();
+                        area.setText(Integer.toString(m1.getHp()));
+                    }
 	            }
 	          });
 
