@@ -1,4 +1,4 @@
-package com.alma.platform;
+package com.alma.platform.plugins;
 
 import java.util.Properties;
 
