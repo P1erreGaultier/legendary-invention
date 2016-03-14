@@ -1,7 +1,7 @@
 package com.alma.platform.monitor;
 
 /**
- * Created by E122371M on 14/03/16.
+ * Interface représentant un observateur d'évènements liés au Moniteur d'activités
  */
 public interface MonitorObserver {
     void execute();

@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by E122371M on 14/03/16.
+ * Classe singleton représentant un moniteur d'activités
  */
 public class Monitor {
 
     private static Monitor instance;
     private List<MonitorObserver> logObservers;
-    private List<>
+    private List<String> logs;
 
     private Monitor() {
         logObservers = new ArrayList<>();
+        logs = new ArrayList<>();
     }
 
     public static Monitor getInstance() {
@@ -27,14 +28,18 @@ public class Monitor {
         return instance;
     }
 
-    private void triggerLogObservers() {
+    /**
+     * Notifie tous les observeurs
+     */
+    private void triggerLogObservers(String log) {
         for(MonitorObserver observer : logObservers) {
             observer.execute();
         }
     }
 
     public void addLog(String log) {
-
+        logs.add(log);
+        //triggerLogObservers();
     }
 
     public void addLogListener(MonitorObserver observer) {
@@ -48,5 +53,7 @@ public class Monitor {
                 System.out.println("moniteur ok");
             }
         });
+
+        Monitor.getInstance().addLog("toto");
     }
 }
