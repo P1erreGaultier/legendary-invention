@@ -2,6 +2,9 @@
 # Script d'installation pour la plateforme à plugin Legendary-invention
 # Auteurs : Pierre gaultier, Arnaud Grall, Nedhir Messaoud, Thomas Minier
 
+# TODO virer Maven et n'utiliser que javac ?
+# TODO pour exécuter : java -cp target/legendary-invention-platform-1.0-SNAPSHOT.jar com.alma.platform.Platform
+
 # Variables to store various paths
 PROJECT_PATH=`pwd`
 
@@ -20,7 +23,7 @@ BUILD_EXTENSIONS=false
 SHOW_HELP=false
 
 # fetch all the option of the script
-while getopts "paeho" opt; do
+while getopts "paeh" opt; do
 	case $opt in
 		p)
 			BUILD_PLATFORM=true
@@ -33,9 +36,6 @@ while getopts "paeho" opt; do
 			;;
 		h)
 			SHOW_HELP=true
-			;;
-		o)
-			ONLINE=false;
 			;;
 		\?)
 			echo "Pour plus de détails, afficher l'aide avec ./install.sh -h"
@@ -115,7 +115,7 @@ if $BUILD_PLATFORM; then
 		mvn package
 	else
 		if [ ! -d "$PLATFORM_PATH/target" ]; then
-			mkdir $PLATFORM_PATH/target
+			mkdir -p $PLATFORM_PATH/target/classes
 		else
 			echo "Cleaning platform build directory in ${PLATFORM_PATH}"
 			rm -rf $PLATFORM_PATH/target
@@ -137,7 +137,7 @@ if $BUILD_APP; then
 		mvn package
 	else
 		if [ ! -d "$APP_PATH/target" ]; then
-			mkdir $APP_PATH/target
+			mkdir -p $APP_PATH/target/classes
 		else
 			echo "Cleaning application build directory in ${APP_PATH}"
 			rm -rf $APP_PATH/target
@@ -162,7 +162,7 @@ if $BUILD_EXTENSIONS; then
 			mvn package
 		else
 			if [ ! -d "$extension/target" ]; then
-				mkdir $extension/target
+				mkdir -p $extension/target/classes
 			else
 				echo "Cleaning extension build directory in ${extension}"
 				rm -rf $extension/target
