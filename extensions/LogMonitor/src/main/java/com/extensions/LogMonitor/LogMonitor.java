@@ -88,6 +88,7 @@ public class LogMonitor extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
 
     public static void main(String[] args) {

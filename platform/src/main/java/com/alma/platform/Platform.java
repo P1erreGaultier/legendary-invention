@@ -118,7 +118,7 @@ public class Platform {
 
     public static void main(String[] args) {
         try {
-            //Platform.getInstance().monitoringOn();
+            Platform.getInstance().monitoringOn();
             for(String plugin_name: Platform.getInstance().getAutorunExtensions()) {
                 Platform.getInstance().getExtension(plugin_name);
             }
