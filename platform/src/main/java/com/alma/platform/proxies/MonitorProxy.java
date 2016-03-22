@@ -1,5 +1,7 @@
 package com.alma.platform.proxies;
 
+import com.alma.platform.monitor.Log;
+import com.alma.platform.monitor.LogLevel;
 import com.alma.platform.monitor.Monitor;
 
 import java.lang.reflect.InvocationHandler;
@@ -18,7 +20,9 @@ public class MonitorProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object o, Method method, Object[] args) throws Throwable {
-        String log = "Method " + method.getName() + " called by " + o.getClass().getName();
+        String msg = "Method " + method.getName() + " called by " + o.getClass().getName();
+
+        Log log = new Log(LogLevel.NORMAL, target.getClass().getName(), msg);
         Monitor.getInstance().addLog(log);
 
         System.out.println("Console log : " + log);

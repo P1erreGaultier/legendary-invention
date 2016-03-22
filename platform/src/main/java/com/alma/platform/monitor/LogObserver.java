@@ -9,5 +9,5 @@ public interface LogObserver {
      * Méthode exécutée à chaque nouvel ajout de log par le moniteur
      * @param log
      */
-    void execute(String log);
+    void execute(Log log);
 }

@@ -16,7 +16,7 @@ public class Monitor {
     private static Monitor instance;
     private Map<String, PluginInfos> extensions;
     private List<LogObserver> logObservers;
-    private List<String> logs;
+    private List<Log> logs;
 
     private Monitor() {
         logObservers = new ArrayList<>();
@@ -42,7 +42,7 @@ public class Monitor {
     /**
      * Notifie tous les observeurs de l'ajout d'un log
      */
-    private void triggerLogObservers(String log) {
+    private void triggerLogObservers(Log log) {
         for(LogObserver observer : logObservers) {
             observer.execute(log);
         }
@@ -82,7 +82,7 @@ public class Monitor {
     /**
      * Méthode qui ajoute un log
      */
-    public void addLog(String log) {
+    public void addLog(Log log) {
         logs.add(log);
         triggerLogObservers(log);
     }

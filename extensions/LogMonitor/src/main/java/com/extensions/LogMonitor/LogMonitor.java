@@ -1,6 +1,7 @@
 package com.extensions.LogMonitor;
 
 import com.alma.application.interfaces.handler.IClickHandler;
+import com.alma.platform.monitor.Log;
 import com.alma.platform.monitor.LogObserver;
 import com.alma.platform.monitor.Monitor;
 
@@ -66,7 +67,7 @@ public class LogMonitor extends JFrame{
 
         Monitor.getInstance().addLogListener(new LogObserver() {
             @Override
-            public void execute(String s) {
+            public void execute(Log s) {
                 //S IS THE LOG
                 Date t = new Date();
                 String date_string = t.toString();

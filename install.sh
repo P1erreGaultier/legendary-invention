@@ -155,7 +155,7 @@ if $BUILD_EXTENSIONS; then
                 xargs javac -cp .:$PLATFORM_PATH/target/$PLATFORM_JAR_NAME:$APP_PATH/target/$APP_JAR_NAME \
                     -d $extension/target/classes -source 1.7 -bootclasspath "$JAVA_HOME/jre/lib/rt.jar"
             # move resources in Maven fashion
-            if [ ! -d "$extension/src/main/resources/" ]; then
+            if [ -d "$extension/src/main/resources/" ]; then
                 cp -r $extension/src/main/resources/* $extension/target/classes/
             fi
             #jar cf $extension/target/$extension -C $extension/target/classes .
