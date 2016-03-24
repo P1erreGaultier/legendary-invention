@@ -1,7 +1,9 @@
 package com.alma.platform;
 
+import com.alma.platform.backup.BackupManager;
 import com.alma.platform.exceptions.PropertyNotFound;
 import com.alma.platform.factories.ClassicFactory;
+import com.alma.platform.factories.FailureSafeFactory;
 import com.alma.platform.factories.IFactory;
 import com.alma.platform.factories.MonitorProxyFactory;
 import com.alma.platform.monitor.Monitor;
@@ -20,14 +22,16 @@ import java.util.Map;
 public class Platform {
 
     private static Platform instance;
-    private Monitor moniteur;
+    private Monitor monitor;
+    private BackupManager backupsManager;
     private URLClassLoader classLoader;
     private Map<String, Plugin> plugins;
     private IFactory extensionFactory;
 
     private Platform() throws MalformedURLException, PropertyNotFound {
         extensionFactory = new ClassicFactory();
-        moniteur = Monitor.getInstance();
+        backupsManager = new BackupManager();
+        monitor = Monitor.getInstance();
         Parser parser = new Parser();
 
         try {
@@ -36,9 +40,9 @@ public class Platform {
             e.printStackTrace();
         }
 
-        // on enregistre les plugins auprès du moniteur
+        // on enregistre les plugins auprès du monitor
         for(Map.Entry<String, Plugin> plugin : plugins.entrySet()) {
-            moniteur.registerPlugin(plugin.getValue());
+            monitor.registerPlugin(plugin.getValue());
         }
 
         // TODO check si les variables de config obligatoires sont présentes
@@ -83,17 +87,36 @@ public class Platform {
      */
     public Object getExtension(String extension_name) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         Plugin plugin = plugins.get(extension_name);
-        Monitor.getInstance().reportNewInstance(plugin.getName());
+        monitor.reportNewInstance(plugin.getName());
         return extensionFactory.get(plugin.getClassName(), classLoader);
     }
 
     /**
-     * Méthode qui active le monitoring complet des prochaines extensions à être instanciées
+     * Méthode qui active/désactive le monitoring complet des prochaines extensions à être instanciées
      */
-    public void monitoringOn() {
-        extensionFactory = new MonitorProxyFactory();
+    public void switchMonitoring() {
+        if( ! (extensionFactory instanceof MonitorProxyFactory)) {
+            extensionFactory = new MonitorProxyFactory();
+        } else {
+            extensionFactory = new ClassicFactory();
+        }
     }
 
+    /**
+     * Méthode qui active/désactive le mode Failure Safe de la plateforme
+     */
+    public void switchFailureSafeMode() {
+        if(! (extensionFactory instanceof FailureSafeFactory)) {
+            extensionFactory = new FailureSafeFactory(backupsManager);
+        } else {
+            extensionFactory = new ClassicFactory();
+        }
+    }
+
+    /**
+     * Méthode qui retounr eune liste des noms des extensions à lancer au démarrage de l'application
+     * @return
+     */
     public List<String> getAutorunExtensions() {
         List<String> results = new ArrayList<>();
         for(Map.Entry<String, Plugin> plugin : plugins.entrySet()) {
@@ -106,6 +129,11 @@ public class Platform {
         return results;
     }
 
+    /**
+     *
+     * @param interface_name
+     * @return
+     */
     public List<String> getByInterface(String interface_name) {
         List<String> results = new ArrayList<>();
         for(Map.Entry<String, Plugin> plugin : plugins.entrySet()) {
@@ -118,14 +146,13 @@ public class Platform {
 
     public static void main(String[] args) {
         try {
-            Platform.getInstance().monitoringOn();
+            //Platform.getInstance().switchMonitoring();
+            Platform.getInstance().switchFailureSafeMode();
             for(String plugin_name: Platform.getInstance().getAutorunExtensions()) {
                 Platform.getInstance().getExtension(plugin_name);
             }
         } catch (MalformedURLException | IllegalAccessException | InstantiationException | ClassNotFoundException | PropertyNotFound e) {
             e.printStackTrace();
         }
-
-        System.out.println("Infos : " + Monitor.getInstance().getPluginInfos("app"));
     }
 }
