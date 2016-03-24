@@ -19,11 +19,17 @@ public class LogMonitor extends JFrame{
     boolean log_status;
 
     //WINDOW
-    JTextArea area;
-    JPanel panel;
-    JMenuBar menubar;
-    JMenu file;
-    JMenuItem eMenuItem;
+    private JTextArea area;
+    private JPanel panel;
+    private JMenuBar menubar;
+    private JMenu file;
+    private JMenuItem eMenuItem;
+    private JTable logTable;
+    private LogTableModele model;
+    LogMonitor frame;
+
+
+
     void setLogOn(){
         log_status=true;
     }
@@ -35,66 +41,42 @@ public class LogMonitor extends JFrame{
 
 
     public LogMonitor() {
-        log_status=false;
+        super();
+        this.frame = this;
+        frame.log_status=false;
+        frame.setTitle("LogMonitor");
+        frame.setLocationRelativeTo(null);
 
-        panel = new JPanel();
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.setLayout(new GridLayout(1,1));
 
-        menubar = new JMenuBar();
-        file = new JMenu("File");
-        file.setMnemonic(KeyEvent.VK_F);
 
-        eMenuItem = new JMenuItem("Exit");
-        eMenuItem.setMnemonic(KeyEvent.VK_E);
-        eMenuItem.setToolTipText("Exit application");
-        eMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                System.exit(0);
-            }
-        });
-
-        file.add(eMenuItem);
-        menubar.add(file);
-
-        setJMenuBar(menubar);
-
-        area = new JTextArea("DEFAULT LOG");
-        area.setPreferredSize(new Dimension(500, 300));
-        area.setFont(new Font("Calibri",Font.PLAIN,20));
+        frame.model = new LogTableModele();
+        frame.logTable = new JTable(model);
+        frame.logTable.setAutoCreateRowSorter(true);
 
         Monitor.getInstance().addLogListener(new LogObserver() {
             @Override
             public void execute(Log s) {
                 //S IS THE LOG
-                Date t = new Date();
-                String date_string = t.toString();
-                String new_log = "[LogMonitorExtension]:"+date_string+s;
-                System.out.println(new_log);
-                area.setText(new_log);
-                panel.add(area);
+                LogForTable l = new LogForTable();
+                l.setLevel(s.getLevel().toString());
+                l.setTimestamp(s.getTimestamp().toString());
+                l.setOrigin(s.getOriginClassName());
+                l.setMessage(s.getMessage());
+                frame.model.logs.add(l);
+
+                frame.logTable.getColumnModel().getColumn(0).setCellRenderer(new ColorCellRenderer());
+                frame.logTable = new JTable(model);
+                frame.logTable.setAutoCreateRowSorter(true);
+                SwingUtilities.updateComponentTreeUI(frame);
             }
         });
 
 
-        panel.add(area);
 
-        add(panel);
-
+        frame.getContentPane().add(new JScrollPane(logTable));
         pack();
-
-        setTitle("LogMonitor");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setVisible(true);
     }
-
-    public static void main(String[] args) {
-        LogMonitor l = new LogMonitor();
-    }
-
-
 }
