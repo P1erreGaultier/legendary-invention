@@ -91,12 +91,12 @@ public class App extends JFrame {
 	        area.setPreferredSize(new Dimension(100, 100));
 	        area.setFont(new Font("Calibri",Font.PLAIN,80));
 	        area.setEditable(false);
-	        JLabel label = null;
+	        final JLabel label = new JLabel();
             BufferedImage img= null;
             try {
 	            img = ImageIO.read(new File(m1.getImage()));
 	            ImageIcon icon = new ImageIcon(img);
-	            label = new JLabel(icon);
+	            label.setIcon(icon);
 	         } catch (IOException e) {
 	            e.printStackTrace();
 	         }
@@ -112,6 +112,7 @@ public class App extends JFrame {
 	            		JOptionPane.showMessageDialog(null, "Victory!!!");
                         m1 = factories.get(randomgenerator.nextInt(factories.size())).createMonster20();
                         area.setText(Integer.toString(m1.getHp()));
+                        label.setIcon(new ImageIcon((m1.getImage())));
                     }
 	            }
 	          });
