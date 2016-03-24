@@ -32,9 +32,6 @@ public class MonsterFactory implements IMonsterFactory {
             default:
                 break;
         }
-
-
-
         return m;
     }
 }

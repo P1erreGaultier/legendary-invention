@@ -35,6 +35,14 @@ public class App extends JFrame {
     public static final String extpath = "com.alma.application.interfaces";
 
 	    public App() {
+
+		    initUI();
+            setVisible(true);
+
+	    }
+
+	    private void initUI() {
+
             factories = new ArrayList<>();
             handlers = new ArrayList<>();
 
@@ -54,13 +62,6 @@ public class App extends JFrame {
             // on tire au random un producteur
             randomgenerator = new Random();
             m1 = factories.get(randomgenerator.nextInt(factories.size())).createMonster20();
-
-			initUI();
-
-           setVisible(true);
-	    }
-
-	    private void initUI() {
 	    	
 	        JPanel panel = new JPanel();
 
@@ -83,10 +84,9 @@ public class App extends JFrame {
 
 	        file.add(eMenuItem);
 	        menubar.add(file);
-
 	        setJMenuBar(menubar);
-	           
-	        
+
+
 	        final JTextArea area = new JTextArea(Integer.toString(m1.getHp()));
 	        area.setPreferredSize(new Dimension(100, 100));
 	        area.setFont(new Font("Calibri",Font.PLAIN,80));
