@@ -146,8 +146,8 @@ public class Platform {
 
     public static void main(String[] args) {
         try {
-            //Platform.getInstance().switchMonitoring();
-            Platform.getInstance().switchFailureSafeMode();
+            Platform.getInstance().switchMonitoring();
+            //Platform.getInstance().switchFailureSafeMode();
             for(String plugin_name: Platform.getInstance().getAutorunExtensions()) {
                 Platform.getInstance().getExtension(plugin_name);
             }
