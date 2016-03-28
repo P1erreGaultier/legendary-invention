@@ -75,7 +75,7 @@ public class Monitor {
     public void reportNewInstance(String name) {
         if(extensions.containsKey(name)) {
             PluginInfos infos = extensions.get(name);
-            infos.addInstances();
+            infos.addInstances(name);
         }
     }
 
