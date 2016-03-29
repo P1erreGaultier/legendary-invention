@@ -3,6 +3,7 @@ package com.alma.application;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import com.alma.application.interfaces.IAdditionnalPanel;
 import com.alma.application.interfaces.handler.IClickHandler;
 import com.alma.application.interfaces.monster.IMonster;
 import com.alma.application.interfaces.monster.IMonsterFactory;
@@ -28,108 +29,134 @@ import java.util.Random;
 
 public class App extends JFrame {
 
-	Platform platform;
-	private IMonster m1;
-	private List<IMonsterFactory> factories;
-	private List<IClickHandler> handlers;
-    private Random randomgenerator;
     public static final String extpath = "com.alma.application.interfaces";
 
-	    public App() {
+    private IMonster currentMonster;
+    private JPanel contentPanel;
+    private JPanel mainPanel;
+    private List<IMonsterFactory> factories;
+    private List<IClickHandler> handlers;
+    private List<IAdditionnalPanel> additionnalPanels;
+    private Random randomGenerator;
 
-		    initUI();
-            setVisible(true);
+    public App() {
+        factories = new ArrayList<>();
+        handlers = new ArrayList<>();
+        additionnalPanels = new ArrayList<>();
 
-	    }
-
-	    private void initUI() {
-
-            factories = new ArrayList<>();
-            handlers = new ArrayList<>();
-
-            try {
-                for(String factory_name: Platform.getInstance().getByInterface(extpath+".monster.IMonsterFactory")) {
-                    factories.add((IMonsterFactory) Platform.getInstance().getExtension(factory_name));
-                }
-
-                for(String handler_name : Platform.getInstance().getByInterface(extpath+".handler.IClickHandler")) {
-                    handlers.add((IClickHandler) Platform.getInstance().getExtension(handler_name));
-                }
-
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | PropertyNotFoundException | NoSavedInstanceException e) {
-                e.printStackTrace();
+        try {
+            for(String factory_name: Platform.getInstance().getByInterface(extpath + ".monster.IMonsterFactory")) {
+                factories.add((IMonsterFactory) Platform.getInstance().getExtension(factory_name));
             }
 
-			// on tire au random un producteur
-            randomgenerator = new Random();
-            m1 = factories.get(randomgenerator.nextInt(factories.size())).createMonster20();
-	    	
-	        JPanel panel = new JPanel();
-
-	        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-	        panel.setLayout(new GridLayout(2,1));
-	        
-	        JMenuBar menubar = new JMenuBar();
-	        JMenu file = new JMenu("File");
-	        file.setMnemonic(KeyEvent.VK_F);
-
-	        JMenuItem eMenuItem = new JMenuItem("Exit");
-	        eMenuItem.setMnemonic(KeyEvent.VK_E);
-	        eMenuItem.setToolTipText("Exit application");
-	        eMenuItem.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent event) {
-	                System.exit(0);
-	            }
-	        });
-
-	        file.add(eMenuItem);
-	        menubar.add(file);
-	        setJMenuBar(menubar);
-
-
-	        final JTextArea area = new JTextArea(Integer.toString(m1.getHp()));
-	        area.setPreferredSize(new Dimension(100, 100));
-	        area.setFont(new Font("Calibri",Font.PLAIN,80));
-	        area.setEditable(false);
-	        final JLabel label = new JLabel();
-            BufferedImage img= null;
-            try {
-	            img = ImageIO.read(new File(m1.getImage()));
-	            ImageIcon icon = new ImageIcon(img);
-	            label.setIcon(icon);
-	         } catch (IOException e) {
-	            e.printStackTrace();
-	         }
-
-            assert(label!=null);
-	        label.addMouseListener( new MouseAdapter(){
-	            public void mouseClicked(MouseEvent e) {
-                    m1.setHp(m1.getHp()-1);
-	            	if(m1.getHp()>=0){
-	            		area.setText(Integer.toString(m1.getHp()));
-	            	}
-	            	if(area.getText().equals("0")){
-	            		JOptionPane.showMessageDialog(null, "Victory!!!");
-                        m1 = factories.get(randomgenerator.nextInt(factories.size())).createMonster20();
-                        area.setText(Integer.toString(m1.getHp()));
-                        label.setIcon(new ImageIcon((m1.getImage())));
-                    }
-	            }
-	          });
-
-            for(IClickHandler handler : handlers) {
-                handler.setHandler(label);
+            for(String handler_name : Platform.getInstance().getByInterface(extpath + ".handler.IClickHandler")) {
+                handlers.add((IClickHandler) Platform.getInstance().getExtension(handler_name));
             }
-	        panel.add(label);
-	        panel.add(area);
 
-	        add(panel);
+            for(String panel_name : Platform.getInstance().getByInterface(extpath + ".IAdditionnalPanel")) {
+                additionnalPanels.add((IAdditionnalPanel) Platform.getInstance().getExtension(panel_name));
+            }
 
-	        pack();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | PropertyNotFoundException | NoSavedInstanceException e) {
+            e.printStackTrace();
+        }
 
-	        setTitle("Clicker");
-	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        setLocationRelativeTo(null);
-	    }
+        // on crée le panel container
+        contentPanel = new JPanel();
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        contentPanel.setLayout(new GridLayout(1, additionnalPanels.size() + 1));
+
+        // on crée le panel principal
+        mainPanel = new JPanel();
+
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        mainPanel.setLayout(new GridLayout(2,1));
+
+        // on init le panel principal
+        initMainPanel();
+
+        // on ajoute tous les panels au contentPanel dans l'ordre suivant :
+        // IAdditionnalPanel alignés à gauche, mainPanel puis IAdditionnalPanel alignés à droite
+        for(IAdditionnalPanel panel : additionnalPanels) {
+            if(panel.isLeftAlign()) {
+                contentPanel.add(panel.getPanel());
+            }
+        }
+        contentPanel.add(mainPanel);
+        for(IAdditionnalPanel panel : additionnalPanels) {
+            if(panel.isRightAlign()) {
+                contentPanel.add(panel.getPanel());
+            }
+        }
+
+        // on ajoute le main pannel et on configure le reste de la frame
+        add(contentPanel);
+        pack();
+        setTitle("Clicker");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    private void initMainPanel() {
+
+        // on tire au random un producteur de monstrers
+        randomGenerator = new Random();
+        currentMonster = factories.get(randomGenerator.nextInt(factories.size())).createMonster20();
+
+        JMenuBar menubar = new JMenuBar();
+        JMenu file = new JMenu("File");
+        file.setMnemonic(KeyEvent.VK_F);
+
+        JMenuItem eMenuItem = new JMenuItem("Exit");
+        eMenuItem.setMnemonic(KeyEvent.VK_E);
+        eMenuItem.setToolTipText("Exit application");
+        eMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                System.exit(0);
+            }
+        });
+
+        file.add(eMenuItem);
+        menubar.add(file);
+        setJMenuBar(menubar);
+
+        final JTextArea area = new JTextArea(Integer.toString(currentMonster.getHp()));
+        area.setPreferredSize(new Dimension(100, 100));
+        area.setFont(new Font("Calibri",Font.PLAIN,80));
+        area.setEditable(false);
+        final JLabel label = new JLabel();
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File(currentMonster.getImage()));
+            ImageIcon icon = new ImageIcon(img);
+            label.setIcon(icon);
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+
+        assert(label!=null);
+        label.addMouseListener( new MouseAdapter(){
+            public void mouseClicked(MouseEvent e) {
+            currentMonster.setHp(currentMonster.getHp() - 1);
+            if(currentMonster.getHp() >= 0){
+                area.setText(Integer.toString(currentMonster.getHp()));
+            }
+
+            if(area.getText().equals("0")){
+                JOptionPane.showMessageDialog(null, "Victory!!!");
+                currentMonster = factories.get(randomGenerator.nextInt(factories.size())).createMonster20();
+                area.setText(Integer.toString(currentMonster.getHp()));
+                label.setIcon(new ImageIcon((currentMonster.getImage())));
+            }
+            }
+          });
+
+        for(IClickHandler handler : handlers) {
+            handler.setHandler(label);
+        }
+        mainPanel.add(label);
+        mainPanel.add(area);
+    }
 }
