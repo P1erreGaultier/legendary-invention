@@ -33,6 +33,8 @@ public class StatForTable {
     private String methodName;
     private int nbCall;
 
-
+    public boolean equals(StatForTable obj) {
+        return obj.getMethodName().equals(methodName) && obj.getInstanceName().equals(instanceName);
+    }
 
 }

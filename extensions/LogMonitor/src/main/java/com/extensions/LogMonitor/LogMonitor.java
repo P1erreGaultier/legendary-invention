@@ -3,6 +3,7 @@ package com.extensions.LogMonitor;
 
 import com.alma.platform.monitor.Log;
 import com.alma.platform.monitor.LogObserver;
+import com.alma.platform.monitor.MethodCallObserver;
 import com.alma.platform.monitor.Monitor;
 
 import javax.swing.*;
@@ -72,22 +73,29 @@ public class LogMonitor extends JFrame{
                 SwingUtilities.updateComponentTreeUI(frame);
             }
         });
-        /*
-        Monitor.getInstance().addLogListener(new LogObserver() {
+
+        Monitor.getInstance().addMethodCallListener(new MethodCallObserver() {
             @Override
-            public void execute(Log s) {
-                //S IS THE LOG
-                LogForTable l = new LogForTable();
-                l.setLevel(s.getLevel().toString());
-                l.setTimestamp(s.getTimestamp().toString());
-                l.setOrigin(s.getOriginClassName());
-                l.setMessage(s.getMessage());
-
-
+            public void execute(String s, String s2, int i) {
+                StatForTable stat = new StatForTable();
+                stat.setInstanceName(s);
+                stat.setMethodName(s2);
+                stat.setNbCall(i);
+                boolean contains = false;
+                int index = 0;
+                for (StatForTable x : frame.stat_model.stats){
+                    if (x.equals(stat)) {
+                        x.setNbCall(stat.getNbCall());
+                        contains = true;
+                    }
+                }
+                if(!contains) {
+                    frame.stat_model.stats.add(stat);
+                }
                 SwingUtilities.updateComponentTreeUI(frame);
             }
         });
-        */
+
         panelTop.add(new JScrollPane(logTable));
         panelBot.add(new JScrollPane(statTable));
         frame.add(panelTop, BorderLayout.NORTH);
