@@ -7,6 +7,9 @@ import java.util.Date;
  */
 public class LogForTable {
     private String message;
+    private String level;
+    private String timestamp;
+    private String origin;
 
     public String getMessage() {
         return message;
@@ -40,7 +43,4 @@ public class LogForTable {
         this.origin = origin;
     }
 
-    private String level;
-    private String timestamp;
-    private String origin;
 }

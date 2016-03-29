@@ -1,24 +1,23 @@
 package com.extensions.LogMonitor;
 
 
-import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LogTableModele extends AbstractTableModel {
-    private final String[] headers = { "Level","Date", "Origin's class", "Message" };
-    public List<LogForTable> logs;
+public class StatTableModele extends AbstractTableModel {
+    private final String[] headers = { "Instance","Method", "Call Number" };
+    public List<StatForTable> stats;
     List<Color> rowColours = Arrays.asList(
             Color.RED,
             Color.GREEN,
             Color.YELLOW
     );
 
-    LogTableModele() {
-        logs = new ArrayList<LogForTable>();
+    StatTableModele() {
+        stats = new ArrayList<StatForTable>();
     }
 
     /**
@@ -34,7 +33,7 @@ public class LogTableModele extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return logs.size();
+        return stats.size();
     }
 
     @Override
@@ -53,10 +52,7 @@ public class LogTableModele extends AbstractTableModel {
                     return String.class;
 
                 case 2:
-                    return String.class;
-
-                case 4:
-                    return String.class;
+                    return Integer.class;
 
                 default:
                     return Object.class;
@@ -68,16 +64,13 @@ public class LogTableModele extends AbstractTableModel {
         switch (columnIndex) {
 
             case 0:
-                return logs.get(rowIndex).getLevel();
+                return stats.get(rowIndex).getInstanceName();
 
             case 1:
-                return logs.get(rowIndex).getTimestamp();
+                return stats.get(rowIndex).getMethodName();
 
             case 2:
-                return logs.get(rowIndex).getOrigin();
-
-            case 3:
-                return logs.get(rowIndex).getMessage();
+                return stats.get(rowIndex).getNbCall();
 
             default:
                 throw new IllegalArgumentException();
@@ -88,6 +81,4 @@ public class LogTableModele extends AbstractTableModel {
     public String getColumnName(int columnIndex) {
         return headers[columnIndex];
     }
-
-
 }
