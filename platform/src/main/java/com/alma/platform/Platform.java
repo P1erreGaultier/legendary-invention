@@ -16,6 +16,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Classe singleton représentant une plateforme de plugins
@@ -23,6 +24,7 @@ import java.util.Map;
 public class Platform {
 
     private static Platform instance;
+    private Properties config;
     private Monitor monitor;
     private BackupManager backupsManager;
     private URLClassLoader classLoader;
@@ -46,7 +48,12 @@ public class Platform {
             monitor.registerPlugin(plugin.getValue());
         }
 
-        // TODO check si les variables de config obligatoires sont présentes
+        // on charge la config de la plateforme
+        try {
+            config = parser.loadConfig("src/main/resources/config.properties");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // génération des urls du class loader
         int i = 0;
@@ -59,6 +66,23 @@ public class Platform {
             i++;
         }
         classLoader = URLClassLoader.newInstance(urls);
+
+        // en fonction du niveau de log, on utilise la factory appropriée
+        int log_level = Integer.parseInt(config.getProperty("log-level"));
+        switch (log_level) {
+            case 0 :
+                extensionFactory = new ClassicFactory();
+                break;
+            case 1 :
+                extensionFactory = new MonitorProxyFactory();
+                break;
+            case 2 :
+                extensionFactory = new FailureSafeFactory(backupsManager);
+                break;
+            default:
+                extensionFactory = new ClassicFactory();
+                break;
+        }
     }
 
     /**
@@ -90,28 +114,6 @@ public class Platform {
         Plugin plugin = plugins.get(extension_name);
         monitor.reportNewInstance(plugin.getName());
         return extensionFactory.get(plugin.getClassName(), classLoader);
-    }
-
-    /**
-     * Méthode qui active/désactive le monitoring complet des prochaines extensions à être instanciées
-     */
-    public void switchMonitoring() {
-        if( ! (extensionFactory instanceof MonitorProxyFactory)) {
-            extensionFactory = new MonitorProxyFactory();
-        } else {
-            extensionFactory = new ClassicFactory();
-        }
-    }
-
-    /**
-     * Méthode qui active/désactive le mode Failure Safe de la plateforme
-     */
-    public void switchFailureSafeMode() {
-        if(! (extensionFactory instanceof FailureSafeFactory)) {
-            extensionFactory = new FailureSafeFactory(backupsManager);
-        } else {
-            extensionFactory = new ClassicFactory();
-        }
     }
 
     /**
@@ -147,8 +149,6 @@ public class Platform {
 
     public static void main(String[] args) {
         try {
-            //Platform.getInstance().switchMonitoring();
-            Platform.getInstance().switchFailureSafeMode();
             for(String plugin_name: Platform.getInstance().getAutorunExtensions()) {
                 Platform.getInstance().getExtension(plugin_name);
             }

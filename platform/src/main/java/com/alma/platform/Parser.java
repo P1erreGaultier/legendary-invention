@@ -4,6 +4,7 @@ import com.alma.platform.exceptions.PropertyNotFoundException;
 import com.alma.platform.plugins.Plugin;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,7 +42,14 @@ public class Parser {
 		return res;
 	}
 
-    public boolean isValidated(Properties properties) throws PropertyNotFoundException {
+    public Properties loadConfig(String filename) throws IOException {
+        FileReader fileReader = new FileReader(filename);
+        Properties config = new Properties();
+        config.load(fileReader);
+        return config;
+    }
+
+    private boolean isValidated(Properties properties) throws PropertyNotFoundException {
         if(! properties.containsKey("name")) {
             throw new PropertyNotFoundException("Property not found : name");
         }
