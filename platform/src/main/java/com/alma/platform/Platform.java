@@ -9,14 +9,12 @@ import com.alma.platform.factories.IFactory;
 import com.alma.platform.factories.MonitorProxyFactory;
 import com.alma.platform.monitor.Monitor;
 import com.alma.platform.plugins.Plugin;
+import com.alma.platform.proxies.IMonitorProxy;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Classe singleton représentant une plateforme de plugins
@@ -112,12 +110,16 @@ public class Platform {
      */
     public Object getExtension(String extension_name) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSavedInstanceException {
         Plugin plugin = plugins.get(extension_name);
-        monitor.reportNewInstance(plugin.getName());
-        return extensionFactory.get(plugin.getClassName(), classLoader);
+        Object objet = extensionFactory.get(plugin.getClassName(), classLoader);
+        monitor.reportNewInstance(extension_name, plugin.getClassName() + "#" + System.identityHashCode(objet));
+        if(extensionFactory instanceof MonitorProxyFactory) {
+            ((IMonitorProxy) objet).setExtensionName(extension_name);
+        }
+        return objet;
     }
 
     /**
-     * Méthode qui retounr eune liste des noms des extensions à lancer au démarrage de l'application
+     * Méthode qui retounre une liste des noms des extensions à lancer au démarrage de l'application
      * @return
      */
     public List<String> getAutorunExtensions() {
@@ -148,6 +150,7 @@ public class Platform {
     }
 
     public static void main(String[] args) {
+
         try {
             for(String plugin_name: Platform.getInstance().getAutorunExtensions()) {
                 Platform.getInstance().getExtension(plugin_name);
@@ -155,5 +158,7 @@ public class Platform {
         } catch (MalformedURLException | IllegalAccessException | InstantiationException | ClassNotFoundException | PropertyNotFoundException | NoSavedInstanceException e) {
             e.printStackTrace();
         }
+
+
     }
 }

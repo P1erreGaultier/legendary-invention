@@ -17,16 +17,16 @@ public class InstanceInfos {
         methodCalls = new HashMap<>();
     }
 
-    public void addMethodCall(String name) {
+    public void addMethodCall(String method_name) {
         int calls = 0;
-        if(methodCalls.containsKey(name)) {
-            calls = methodCalls.get(name);
+        if(methodCalls.containsKey(method_name)) {
+            calls = methodCalls.get(method_name);
         }
-        methodCalls.put(name, calls + 1);
+        methodCalls.put(method_name, calls + 1);
     }
 
-    public int getMethodCall(String name) {
-        return methodCalls.get(name);
+    public int getMethodCall(String method_name) {
+        return methodCalls.get(method_name);
     }
 
     public Set<String> getMethodsNames() {
