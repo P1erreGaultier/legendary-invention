@@ -1,6 +1,7 @@
 package com.alma.platform.factories;
 
 import com.alma.platform.backup.BackupManager;
+import com.alma.platform.exceptions.NoSavedInstanceException;
 import com.alma.platform.monitor.Log;
 import com.alma.platform.monitor.LogLevel;
 import com.alma.platform.monitor.Monitor;
@@ -20,7 +21,7 @@ public class FailureSafeFactory implements IFactory {
     }
 
     @Override
-    public Object get(String extension_name, ClassLoader loader) {
+    public Object get(String extension_name, ClassLoader loader) throws NoSavedInstanceException {
         Object instance;
         try {
             instance = Class.forName(extension_name, true, loader).newInstance();

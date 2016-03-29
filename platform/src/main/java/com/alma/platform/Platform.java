@@ -1,7 +1,8 @@
 package com.alma.platform;
 
 import com.alma.platform.backup.BackupManager;
-import com.alma.platform.exceptions.PropertyNotFound;
+import com.alma.platform.exceptions.NoSavedInstanceException;
+import com.alma.platform.exceptions.PropertyNotFoundException;
 import com.alma.platform.factories.ClassicFactory;
 import com.alma.platform.factories.FailureSafeFactory;
 import com.alma.platform.factories.IFactory;
@@ -28,7 +29,7 @@ public class Platform {
     private Map<String, Plugin> plugins;
     private IFactory extensionFactory;
 
-    private Platform() throws MalformedURLException, PropertyNotFound {
+    private Platform() throws MalformedURLException, PropertyNotFoundException {
         extensionFactory = new ClassicFactory();
         backupsManager = new BackupManager();
         monitor = Monitor.getInstance();
@@ -64,9 +65,9 @@ public class Platform {
      * Méthode qui retourne l'instance de la plateforme
      * @return
      * @throws MalformedURLException
-     * @throws PropertyNotFound
+     * @throws PropertyNotFoundException
      */
-    public static Platform getInstance() throws MalformedURLException, PropertyNotFound {
+    public static Platform getInstance() throws MalformedURLException, PropertyNotFoundException {
         if(instance == null) {
             synchronized (Platform.class) {
                 if(instance == null) {
@@ -85,7 +86,7 @@ public class Platform {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    public Object getExtension(String extension_name) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public Object getExtension(String extension_name) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSavedInstanceException {
         Plugin plugin = plugins.get(extension_name);
         monitor.reportNewInstance(plugin.getName());
         return extensionFactory.get(plugin.getClassName(), classLoader);
@@ -146,12 +147,12 @@ public class Platform {
 
     public static void main(String[] args) {
         try {
-            Platform.getInstance().switchMonitoring();
-            //Platform.getInstance().switchFailureSafeMode();
+            //Platform.getInstance().switchMonitoring();
+            Platform.getInstance().switchFailureSafeMode();
             for(String plugin_name: Platform.getInstance().getAutorunExtensions()) {
                 Platform.getInstance().getExtension(plugin_name);
             }
-        } catch (MalformedURLException | IllegalAccessException | InstantiationException | ClassNotFoundException | PropertyNotFound e) {
+        } catch (MalformedURLException | IllegalAccessException | InstantiationException | ClassNotFoundException | PropertyNotFoundException | NoSavedInstanceException e) {
             e.printStackTrace();
         }
     }

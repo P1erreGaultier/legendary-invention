@@ -7,7 +7,8 @@ import com.alma.application.interfaces.handler.IClickHandler;
 import com.alma.application.interfaces.monster.IMonster;
 import com.alma.application.interfaces.monster.IMonsterFactory;
 import com.alma.platform.Platform;
-import com.alma.platform.exceptions.PropertyNotFound;
+import com.alma.platform.exceptions.NoSavedInstanceException;
+import com.alma.platform.exceptions.PropertyNotFoundException;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -55,11 +56,11 @@ public class App extends JFrame {
                     handlers.add((IClickHandler) Platform.getInstance().getExtension(handler_name));
                 }
 
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | PropertyNotFound e) {
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | PropertyNotFoundException | NoSavedInstanceException e) {
                 e.printStackTrace();
             }
 
-            // on tire au random un producteur
+			// on tire au random un producteur
             randomgenerator = new Random();
             m1 = factories.get(randomgenerator.nextInt(factories.size())).createMonster20();
 	    	

@@ -1,6 +1,6 @@
 package com.alma.platform;
 
-import com.alma.platform.exceptions.PropertyNotFound;
+import com.alma.platform.exceptions.PropertyNotFoundException;
 import com.alma.platform.plugins.Plugin;
 
 import java.io.BufferedReader;
@@ -15,7 +15,7 @@ import java.util.Properties;
  */
 public class Parser {
 
-	public Map<String, Plugin> parseIt(String formatFichier) throws IOException, PropertyNotFound {
+	public Map<String, Plugin> parseIt(String formatFichier) throws IOException, PropertyNotFoundException {
         String aLine;
 
         FileReader fileReader = new FileReader(formatFichier);
@@ -41,21 +41,21 @@ public class Parser {
 		return res;
 	}
 
-    public boolean isValidated(Properties properties) throws PropertyNotFound {
+    public boolean isValidated(Properties properties) throws PropertyNotFoundException {
         if(! properties.containsKey("name")) {
-            throw new PropertyNotFound("Property not found : name");
+            throw new PropertyNotFoundException("Property not found : name");
         }
 
         if(! properties.containsKey("class")) {
-            throw new PropertyNotFound("Property not found : class");
+            throw new PropertyNotFoundException("Property not found : class");
         }
 
         if(! properties.containsKey("interface")) {
-            throw new PropertyNotFound("Property not found : interface");
+            throw new PropertyNotFoundException("Property not found : interface");
         }
 
         if(! properties.containsKey("directory")) {
-            throw new PropertyNotFound("Property not found : directory");
+            throw new PropertyNotFoundException("Property not found : directory");
         }
 
         return true;
