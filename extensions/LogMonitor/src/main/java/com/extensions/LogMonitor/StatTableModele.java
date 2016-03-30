@@ -7,18 +7,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Model used to print method call number
+ */
 public class StatTableModele extends AbstractTableModel {
-    private final String[] headers = { "Instance","Method", "Call Number" };
+    /**
+     * HEADER
+     */
+    private final String[] headers = { "Extension","Instance","Method", "Call Number" };
+    /**
+     * DATA
+     */
     public List<StatForTable> stats;
+    /**
+     * COLOR
+     */
     List<Color> rowColours = Arrays.asList(
             Color.RED,
             Color.GREEN,
             Color.YELLOW
     );
 
+    /**
+     * CONSTRUCTOR
+     */
     StatTableModele() {
         stats = new ArrayList<StatForTable>();
     }
+
+
 
     /**
      * FOR COLORING ROW WITH LEVEL MESSAGE
@@ -47,11 +64,13 @@ public class StatTableModele extends AbstractTableModel {
                 case 0:
                 case 1:
                     return String.class;
+                case 2:
+                    return String.class;
 
                 case 3:
                     return String.class;
 
-                case 2:
+                case 4:
                     return Integer.class;
 
                 default:
@@ -62,14 +81,15 @@ public class StatTableModele extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
-
             case 0:
+                return stats.get(rowIndex).getExtensionName();
+            case 1:
                 return stats.get(rowIndex).getInstanceName();
 
-            case 1:
+            case 2:
                 return stats.get(rowIndex).getMethodName();
 
-            case 2:
+            case 3:
                 return stats.get(rowIndex).getNbCall();
 
             default:

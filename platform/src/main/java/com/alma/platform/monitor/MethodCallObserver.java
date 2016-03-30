@@ -5,5 +5,5 @@ package com.alma.platform.monitor;
  */
 public interface MethodCallObserver {
 
-    void execute(String instance_name, String method_name, int nb_calls);
+    void execute(String extension_name, String instance_name, String method_name, int nb_calls);
 }

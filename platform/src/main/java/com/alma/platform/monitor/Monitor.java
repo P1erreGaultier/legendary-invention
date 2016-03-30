@@ -154,7 +154,7 @@ public class Monitor {
             if(methodCalls.size() > 0) {
                 int nb_calls = methodCalls.get(method_name);
                 for(MethodCallObserver observer : methodCallObservers) {
-                    observer.execute(instance_name, method_name, nb_calls);
+                    observer.execute(extension_name,instance_name, method_name, nb_calls);
                 }
             }
         }
