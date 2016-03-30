@@ -7,18 +7,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Model used to print method call number
+ */
 public class StatTableModele extends AbstractTableModel {
+    /**
+     * HEADER
+     */
     private final String[] headers = { "Extension","Instance","Method", "Call Number" };
+    /**
+     * DATA
+     */
     public List<StatForTable> stats;
+    /**
+     * COLOR
+     */
     List<Color> rowColours = Arrays.asList(
             Color.RED,
             Color.GREEN,
             Color.YELLOW
     );
 
+    /**
+     * CONSTRUCTOR
+     */
     StatTableModele() {
         stats = new ArrayList<StatForTable>();
     }
+
+
 
     /**
      * FOR COLORING ROW WITH LEVEL MESSAGE

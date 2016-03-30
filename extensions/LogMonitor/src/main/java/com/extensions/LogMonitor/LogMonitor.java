@@ -8,7 +8,6 @@ import java.awt.*;
 
 public class LogMonitor extends JFrame{
 
-    boolean log_status;
     private JPanel panelTop,panelBot;
     private JTable logTable;
     private LogTableModele model;
@@ -16,22 +15,9 @@ public class LogMonitor extends JFrame{
     private StatTableModele stat_model;
     LogMonitor frame;
 
-
-
-    void setLogOn(){
-        log_status=true;
-    }
-
-    void setLogOff(){
-        log_status=false;
-    }
-
-
-
     public LogMonitor() {
         super();
         this.frame = this;
-        frame.log_status=false;
         frame.setTitle("LogMonitor");
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
