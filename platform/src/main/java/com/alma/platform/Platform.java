@@ -158,7 +158,7 @@ public class Platform {
                 try {
                     Platform.getInstance().getExtension(plugin_name);
                 } catch (Exception e) {
-                    Monitor.getInstance().addLog(new Log(LogLevel.CRITICAL, e.getClass().getName(), e.getMessage()));
+                    Monitor.getInstance().addLog(new Log(LogLevel.CRITICAL, e.getClass().getName(), e.toString()));
                 }
             }
         } catch (MalformedURLException | PropertyNotFoundException e) {
