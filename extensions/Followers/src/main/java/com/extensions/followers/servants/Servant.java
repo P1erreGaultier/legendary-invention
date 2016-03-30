@@ -18,7 +18,7 @@ public abstract class Servant {
         this.name = name;
         this.jobName = jobName;
         this.logoFileName = this.getClass().getResource(logoFileName).getPath();
-        this.level = 0;
+        this.level = 1;
         this.hiringPrice = hiringPrice;
         this.uppgradePrice = uppgradePrice;
     }

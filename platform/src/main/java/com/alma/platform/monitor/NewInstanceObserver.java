@@ -6,7 +6,7 @@ package com.alma.platform.monitor;
 public interface NewInstanceObserver {
 
     /**
-     * Méthode
+     * Méthode exécutée à chaque instanciation d'une nouvelle instance
      * @param extension_name
      * @param instance_name
      */

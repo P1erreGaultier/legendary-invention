@@ -24,11 +24,20 @@ public class PluginInfos {
         return instances.size();
     }
 
+    /**
+     * Méthode qui ajoute une instance
+     * @param instance_name
+     */
     public void addInstances(String instance_name) {
         InstanceInfos infos = new InstanceInfos(instance_name);
         instances.put(instance_name, infos);
     }
 
+    /**
+     * Méthode qui ajoute l'appel d'une méthode pour une instance donnée
+     * @param instance_name
+     * @param method_name
+     */
     public void addMethodCall(String instance_name, String method_name) {
         if(instances.containsKey(instance_name)) {
             instances.get(instance_name).addMethodCall(method_name);
@@ -38,6 +47,11 @@ public class PluginInfos {
         }
     }
 
+    /**
+     * Accesseur sur les appels des méthodes pour une instance donnée
+     * @param instance_name
+     * @return
+     */
     public Map<String, Integer> getMethodsCalls(String instance_name) {
         Map<String, Integer> calls = new HashMap<>();
         if(instances.containsKey(instance_name)) {

@@ -110,7 +110,7 @@ public class FollowersPanel implements IAdditionnalPanel {
             final JLabel servantName = new JLabel(servant.getName());
             final JLabel jobName = new JLabel(servant.getJobName());
             JLabel servantState = new JLabel("Non embauché");
-            JLabel servantLevel = new JLabel("Niveau 0");
+            JLabel servantLevel = new JLabel("Niveau " + servant.getLevel());
             servantPanel.add(servantName);
             servantPanel.add(jobName);
             servantPanel.add(servantLevel);
@@ -141,9 +141,8 @@ public class FollowersPanel implements IAdditionnalPanel {
             uppgradeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    int newLevel = servant.getLevel() + 1;
                     servant.upgrade();
-                    servantLevels.get(servant.getName()).setText("Level " + newLevel);
+                    servantLevels.get(servant.getName()).setText("Niveau " + servant.getLevel());
                 }
             });
 

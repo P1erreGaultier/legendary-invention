@@ -1,6 +1,9 @@
 package com.extensions.followers.servants;
 
 import com.alma.application.interfaces.monster.IMonster;
+import com.alma.platform.monitor.Log;
+import com.alma.platform.monitor.LogLevel;
+import com.alma.platform.monitor.Monitor;
 
 /**
  * Classe représentant un servant guerrier
@@ -19,6 +22,6 @@ public class WarriorServant extends Servant {
     @Override
     public void upgrade() {
         level += 1;
-        System.out.println("La puissance de " + name + " est accrue !");
+        Monitor.getInstance().addLog(new Log(LogLevel.NORMAL, this.getClass().getName(), "La puissance de " + name + " est accrue !"));
     }
 }

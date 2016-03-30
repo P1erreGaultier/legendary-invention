@@ -1,7 +1,7 @@
 package com.alma.platform.proxies;
 
 /**
- * Created by E122371M on 29/03/16.
+ * Interface représentant un proxy basique de monitoring
  */
 public interface IMonitorProxy {
 

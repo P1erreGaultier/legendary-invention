@@ -19,22 +19,42 @@ public class Log {
         message = msg;
     }
 
+    /**
+     * Accesseur sur le niveau du Log
+     * @return
+     */
     public LogLevel getLevel() {
         return level;
     }
 
+    /**
+     * Accesseur sur le timestamp du log
+     * @return
+     */
     public Date getTimestamp() {
         return timestamp;
     }
 
+    /**
+     * Accesseur sur le nom de la classe à l'origine du log
+     * @return
+     */
     public String getOriginClassName() {
         return originClassName;
     }
 
+    /**
+     * Accesseur sur le message du log
+     * @return
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Méthode qui renvoie l'objet au format chaîne de caractères
+     * @return
+     */
     @Override
     public String toString() {
         return "[Log " + level + " at " + timestamp.toString() + " from " + originClassName + " : " + message + "]";

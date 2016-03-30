@@ -7,6 +7,8 @@ import com.alma.platform.factories.ClassicFactory;
 import com.alma.platform.factories.FailureSafeFactory;
 import com.alma.platform.factories.IFactory;
 import com.alma.platform.factories.MonitorProxyFactory;
+import com.alma.platform.monitor.Log;
+import com.alma.platform.monitor.LogLevel;
 import com.alma.platform.monitor.Monitor;
 import com.alma.platform.plugins.Plugin;
 import com.alma.platform.proxies.IMonitorProxy;
@@ -119,7 +121,7 @@ public class Platform {
     }
 
     /**
-     * Méthode qui retounre une liste des noms des extensions à lancer au démarrage de l'application
+     * Méthode qui retourne une liste des noms des extensions à lancer au démarrage de l'application
      * @return
      */
     public List<String> getAutorunExtensions() {
@@ -135,7 +137,7 @@ public class Platform {
     }
 
     /**
-     *
+     * Méthode qui retourne une liste des noms des extensions implémentant une interface donnée
      * @param interface_name
      * @return
      */
@@ -150,15 +152,17 @@ public class Platform {
     }
 
     public static void main(String[] args) {
-
         try {
+            // on instancie les extensions qui sont en mode autorun
             for(String plugin_name: Platform.getInstance().getAutorunExtensions()) {
-                Platform.getInstance().getExtension(plugin_name);
+                try {
+                    Platform.getInstance().getExtension(plugin_name);
+                } catch (Exception e) {
+                    Monitor.getInstance().addLog(new Log(LogLevel.CRITICAL, e.getClass().getName(), e.getMessage()));
+                }
             }
-        } catch (MalformedURLException | IllegalAccessException | InstantiationException | ClassNotFoundException | PropertyNotFoundException | NoSavedInstanceException e) {
+        } catch (MalformedURLException | PropertyNotFoundException e) {
             e.printStackTrace();
         }
-
-
     }
 }

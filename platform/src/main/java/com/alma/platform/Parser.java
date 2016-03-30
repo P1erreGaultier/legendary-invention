@@ -16,6 +16,13 @@ import java.util.Properties;
  */
 public class Parser {
 
+    /**
+     * Méthode qui parse un fichier de config d'extensions
+     * @param formatFichier
+     * @return
+     * @throws IOException
+     * @throws PropertyNotFoundException
+     */
 	public Map<String, Plugin> parseIt(String formatFichier) throws IOException, PropertyNotFoundException {
         String aLine;
 
@@ -42,6 +49,12 @@ public class Parser {
 		return res;
 	}
 
+    /**
+     * Méthode qui charge un fichier de config de la plateforme
+     * @param filename
+     * @return
+     * @throws IOException
+     */
     public Properties loadConfig(String filename) throws IOException {
         FileReader fileReader = new FileReader(filename);
         Properties config = new Properties();
@@ -49,6 +62,12 @@ public class Parser {
         return config;
     }
 
+    /**
+     * Méthode qui assure si un ensemble de propriété contient les propriétés obligatoires
+     * @param properties
+     * @return
+     * @throws PropertyNotFoundException
+     */
     private boolean isValidated(Properties properties) throws PropertyNotFoundException {
         if(! properties.containsKey("name")) {
             throw new PropertyNotFoundException("Property not found : name");
