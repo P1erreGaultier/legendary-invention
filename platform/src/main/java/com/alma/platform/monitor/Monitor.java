@@ -72,7 +72,7 @@ public class Monitor {
         if(extensions.containsKey(extension_name)) {
             PluginInfos infos = extensions.get(extension_name);
             infos.addInstances(instance_name);
-            triggerNewInstanceObservers(instance_name);
+            triggerNewInstanceObservers(extension_name, instance_name);
         }
     }
 
@@ -135,9 +135,9 @@ public class Monitor {
      * Notifie tous les observateurs de l'instanciation d'une nouvelle méthode
      * @param instance_name
      */
-    private void triggerNewInstanceObservers(String instance_name) {
+    private void triggerNewInstanceObservers(String extension_name, String instance_name) {
         for(NewInstanceObserver observer : newInstanceObservers) {
-            observer.execute(instance_name);
+            observer.execute(extension_name, instance_name);
         }
     }
 

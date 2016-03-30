@@ -5,5 +5,5 @@ package com.alma.platform.monitor;
  */
 public interface NewInstanceObserver {
 
-    void execute(String instance_name);
+    void execute(String extension_name, String instance_name);
 }
