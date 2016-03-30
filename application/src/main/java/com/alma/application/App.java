@@ -11,7 +11,7 @@ import com.alma.platform.Platform;
 import com.alma.platform.exceptions.NoSavedInstanceException;
 import com.alma.platform.exceptions.PropertyNotFoundException;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -121,10 +121,6 @@ public class App extends JFrame {
         setJMenuBar(menubar);
 
         final JLabel monsterLife = new JLabel("Point de vie : " + currentMonster.getHp());
-       /* final JTextArea area = new JTextArea(Integer.toString(currentMonster.getHp()));
-        area.setPreferredSize(new Dimension(100, 100));
-        area.setFont(new Font("Calibri",Font.PLAIN,80));
-        area.setEditable(false);*/
         final JLabel label = new JLabel();
         BufferedImage img = null;
         try {
@@ -145,13 +141,9 @@ public class App extends JFrame {
                 for(IAdditionnalPanel panel : additionnalPanels) {
                     panel.affectMonster(currentMonster);
                 }
+                monsterLife.setText("Points de vie : " + currentMonster.getHp());
 
-                // on met à jour l'affichage des points de vie du monstre
-                if(monsterPVs > 0){
-                    monsterLife.setText("Points de vie : " + currentMonster.getHp());
-                }
-
-                if(monsterPVs <= 0){
+                if(currentMonster.getHp() <= 0){
                     JOptionPane.showMessageDialog(null, "Victory!!!");
                     currentMonster = factories.get(randomGenerator.nextInt(factories.size())).createMonster20();
                     monsterLife.setText("Point de vie : " + currentMonster.getHp());
@@ -163,7 +155,9 @@ public class App extends JFrame {
         for(IClickHandler handler : handlers) {
             handler.setHandler(label);
         }
-
+        label.setHorizontalAlignment(JLabel.CENTER);
+        monsterLife.setFont(new Font("Calibri", Font.BOLD, 40));
+        monsterLife.setHorizontalAlignment(JLabel.CENTER);
         mainPanel.add(label);
         mainPanel.add(monsterLife);
     }
