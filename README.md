@@ -6,35 +6,29 @@ Structure du projet :
 * application: application utilisant la plateforme
 * extensions : dossier contenant toutes les extensions disponibles
 
-## Pré-requis d'installation ##
-=======
+## Pré-requis d'installation
 
+Les dépendances du projets sont : 
 * Java JRE 1.7 ou supérieur
 
-## Installation ##
-=======
+## Installation
 
 A la racine du projet, veuillez lancer :
-
 * Pour compiler tous le projet (Plateforme + application + extensions)
 ```bash
 ./install.sh
 ```
-
 * Pour compiler juste la platforme : 
-
 ```bash
 ./install.sh -p
 ```
 
 * Pour compiler juste l'application : 
-
 ```bash
 ./install.sh -a
 ```
 
 * Pour compiler juste les extensions : 
-
 ```bash
 ./install.sh -e
 ```
@@ -44,8 +38,8 @@ A la racine du projet, veuillez lancer :
 ./install.sh -h
 ```
 
-## Lancement ##
-=======
+## Lancement
+
 
 * A la racine du projet, veuillez lancer :
 
@@ -53,7 +47,7 @@ A la racine du projet, veuillez lancer :
 ./run.sh
 ```
 
-## Pour créer une nouvelle extension ##
+## Pour créer une nouvelle extension
 
 ```bash
 ./make-extension -n <extension_name> -c <classname>
