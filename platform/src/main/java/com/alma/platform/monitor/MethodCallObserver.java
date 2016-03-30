@@ -1,7 +1,7 @@
 package com.alma.platform.monitor;
 
 /**
- * Created by E122371M on 29/03/16.
+ * Classe représentant un observateur liées à lappel d'une méthode
  */
 public interface MethodCallObserver {
 
