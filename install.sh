@@ -106,7 +106,9 @@ if $BUILD_PLATFORM; then
 	find $PLATFORM_PATH/src/main/ -name *.java | \
 		xargs javac -d $PLATFORM_PATH/target/classes -source 1.7 -bootclasspath "$JAVA_HOME/jre/lib/rt.jar"
 	# move resources in Maven fashion
-	cp -r $PLATFORM_PATH/src/main/resources/* $PLATFORM_PATH/target/classes/
+	if [ -d "${PLATFORM_PATH}/src/main/resources/*" ]; then
+		cp -r $PLATFORM_PATH/src/main/resources/* $PLATFORM_PATH/target/classes/
+	fi
 	echo -e "Creating the platform jar"
 	jar cf $PLATFORM_PATH/target/$PLATFORM_JAR_NAME -C $PLATFORM_PATH/target/classes .
 	echo -e "${GREEN}Plaftorm built with success !${WHITE}"
@@ -128,7 +130,9 @@ if $BUILD_APP; then
 		xargs javac -cp .:$PLATFORM_PATH/target/$PLATFORM_JAR_NAME \
 			-d $APP_PATH/target/classes -source 1.7 -bootclasspath "$JAVA_HOME/jre/lib/rt.jar"
 	# move resources in Maven fashion
-	cp -r $APP_PATH/src/main/resources/* $APP_PATH/target/classes/
+	if [ -d "${APP_PATH}/src/main/resources/*" ]; then
+		cp -r $APP_PATH/src/main/resources/* $APP_PATH/target/classes/
+	fi
 	echo -e "Creating the application jar"
 	jar cf $APP_PATH/target/$APP_JAR_NAME -C $APP_PATH/target/classes .
 	echo -e "${GREEN}Application built with success !${WHITE}"
