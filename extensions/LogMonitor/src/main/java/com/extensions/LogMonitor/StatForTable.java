@@ -4,6 +4,15 @@ package com.extensions.LogMonitor;
  * Created by E113209D on 24/03/16.
  */
 public class StatForTable {
+    public String getExtensionName() {
+        return extensionName;
+    }
+
+    public void setExtensionName(String extensionName) {
+        this.extensionName = extensionName;
+    }
+
+    private String extensionName;
     private String instanceName;
 
     public String getInstanceName() {

@@ -1,10 +1,7 @@
 package com.extensions.LogMonitor;
 
 
-import com.alma.platform.monitor.Log;
-import com.alma.platform.monitor.LogObserver;
-import com.alma.platform.monitor.MethodCallObserver;
-import com.alma.platform.monitor.Monitor;
+import com.alma.platform.monitor.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,8 +73,9 @@ public class LogMonitor extends JFrame{
 
         Monitor.getInstance().addMethodCallListener(new MethodCallObserver() {
             @Override
-            public void execute(String s, String s2, int i) {
+            public void execute(String name, String s, String s2, int i) {
                 StatForTable stat = new StatForTable();
+                stat.setExtensionName(name);
                 stat.setInstanceName(s);
                 stat.setMethodName(s2);
                 stat.setNbCall(i);
