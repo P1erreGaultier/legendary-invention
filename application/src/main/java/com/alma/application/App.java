@@ -11,8 +11,6 @@ import com.alma.platform.Platform;
 import com.alma.platform.exceptions.NoSavedInstanceException;
 import com.alma.platform.exceptions.PropertyNotFoundException;
 
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -122,10 +120,11 @@ public class App extends JFrame {
         menubar.add(file);
         setJMenuBar(menubar);
 
-        final JTextArea area = new JTextArea(Integer.toString(currentMonster.getHp()));
+        final JLabel monsterLife = new JLabel("Point de vie : " + currentMonster.getHp());
+       /* final JTextArea area = new JTextArea(Integer.toString(currentMonster.getHp()));
         area.setPreferredSize(new Dimension(100, 100));
         area.setFont(new Font("Calibri",Font.PLAIN,80));
-        area.setEditable(false);
+        area.setEditable(false);*/
         final JLabel label = new JLabel();
         BufferedImage img = null;
         try {
@@ -136,27 +135,36 @@ public class App extends JFrame {
             e.printStackTrace();
          }
 
-        assert(label!=null);
         label.addMouseListener( new MouseAdapter(){
             public void mouseClicked(MouseEvent e) {
-            currentMonster.setHp(currentMonster.getHp() - 1);
-            if(currentMonster.getHp() >= 0){
-                area.setText(Integer.toString(currentMonster.getHp()));
-            }
+                int monsterPVs = currentMonster.getHp()- 1;
 
-            if(area.getText().equals("0")){
-                JOptionPane.showMessageDialog(null, "Victory!!!");
-                currentMonster = factories.get(randomGenerator.nextInt(factories.size())).createMonster20();
-                area.setText(Integer.toString(currentMonster.getHp()));
-                label.setIcon(new ImageIcon((currentMonster.getImage())));
-            }
+                currentMonster.setHp(monsterPVs);
+
+                // on applique les effets des panels sur le monstre
+                for(IAdditionnalPanel panel : additionnalPanels) {
+                    panel.affectMonster(currentMonster);
+                }
+
+                // on met à jour l'affichage des points de vie du monstre
+                if(monsterPVs > 0){
+                    monsterLife.setText("Points de vie : " + currentMonster.getHp());
+                }
+
+                if(monsterPVs <= 0){
+                    JOptionPane.showMessageDialog(null, "Victory!!!");
+                    currentMonster = factories.get(randomGenerator.nextInt(factories.size())).createMonster20();
+                    monsterLife.setText("Point de vie : " + currentMonster.getHp());
+                    label.setIcon(new ImageIcon((currentMonster.getImage())));
+                }
             }
           });
 
         for(IClickHandler handler : handlers) {
             handler.setHandler(label);
         }
+
         mainPanel.add(label);
-        mainPanel.add(area);
+        mainPanel.add(monsterLife);
     }
 }
