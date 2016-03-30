@@ -47,22 +47,16 @@ while getopts "hn:c:" opt; do
 			SHOW_HELP=true
 			;;
 		\?)
-			echo "Pour plus de détails, afficher l'aide avec ./install.sh -h"
+			echo "Script d'installation pour la plateforme à plugin Legendary-invention"
+			echo "Usage : ./install.sh [option(s)]"
+			echo "Options :"
+			echo "	-h				:	Affiche l'aide"
+			echo "	-n <name>		:	Précise le nom de la nouvelle extension"
+			echo "	-c <classname>	:	Précise le nom de la class principale"
 			exit 1
 			;;
 	esac
 done
-
-# if the required options weren't used
-if [ "$EXT_NAME" = "" ]; then
-	echo "Error : missing argument -n"
-	exit 1
-fi
-
-if [ "$MAIN_CLASS_NAME" = "" ]; then
-	echo "Error : missing argument -c"
-	exit 1
-fi
 
 # Show help if asked, then exit
 if $SHOW_HELP; then
@@ -73,6 +67,17 @@ if $SHOW_HELP; then
 	echo "	-n <name>		:	Précise le nom de la nouvelle extension"
 	echo "	-c <classname>	:	Précise le nom de la class principale"
 	exit 0
+fi
+
+# if the required options weren't used
+if [ "$EXT_NAME" = "" ]; then
+	echo "Error : missing argument -n or -h for help"
+	exit 1
+fi
+
+if [ "$MAIN_CLASS_NAME" = "" ]; then
+	echo "Error : missing argument -c or -h for help"
+	exit 1
 fi
 
 MAIN_PACK_PATH="${EXTENSIONS_PATH}/${EXT_NAME}/src/main/java/com/extensions/${EXT_NAME}"

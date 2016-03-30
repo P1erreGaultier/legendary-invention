@@ -43,7 +43,17 @@ while getopts "paeh" opt; do
 			SHOW_HELP=true
 			;;
 		\?)
-			echo "Pour plus de détails, afficher l'aide avec ./install.sh -h"
+			echo "Script d'installation pour la plateforme à plugin Legendary-invention"
+			echo "Usage : ./install.sh [option(s)]"
+			echo "Options :"
+			echo "	-h	:	Affiche l'aide"
+			echo "	-p	:	Compile la plateforme à plugin"
+			echo "	-a	:	Compile l'application 'Monster Clicker'"
+			echo "	-e	:	Compile toutes les extensions situées
+					dans le dossier 'extensions'"
+			echo "Le mélange d'option est autorisé (-ap, -pe, -pae, ...)"
+			echo "Par exemple, l'option -pa compilera la plateforme et l'application"
+			echo "Si aucun paramètre n'est passé, le script compilera l'ensemble du projet"
 			exit 1
 			;;
 	esac

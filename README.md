@@ -10,7 +10,6 @@ Pré-requis d'installation
 =======
 
 * Java JRE 1.7 ou supérieur
-* Maven 3.0 ou supérieur
 
 Installation et lancement
 =======
@@ -23,8 +22,9 @@ $ cd legendary-invention
 * Compiler chaque extension du repertoire *extensions* séparément
 ```
 # Par exemple
+
 $ cd extensions/
-$ cd extension_1/
+$ cd extension_1
 $ mvn package
 # etc pour chaque extension
 ```
