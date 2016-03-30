@@ -6,36 +6,49 @@ Structure du projet :
 * application: application utilisant la plateforme
 * extensions : dossier contenant toutes les extensions disponibles
 
-Pré-requis d'installation
-=======
+## Pré-requis d'installation
 
+Les dépendances du projet sont : 
 * Java JRE 1.7 ou supérieur
 
-Installation et lancement
-=======
-*Attention* : en l'état, l'application se lance directement, mais plus tard, elle sera démarée comme une extension par la plateforme
+## Installation
 
-* Naviguez dans le dossier du projet
+A la racine du projet, veuillez lancer :
+* Pour compiler tous le projet (Plateforme + application + extensions)
+```bash
+./install.sh
 ```
-$ cd legendary-invention
+* Pour compiler juste la platforme : 
+```bash
+./install.sh -p
 ```
-* Compiler chaque extension du repertoire *extensions* séparément
-```
-# Par exemple
 
-$ cd extensions/
-$ cd extension_1
-$ mvn package
-# etc pour chaque extension
+* Pour compiler juste l'application : 
+```bash
+./install.sh -a
 ```
-* Naviguez dans le dossier de la plateforme et compilezila
+
+* Pour compiler juste les extensions : 
+```bash
+./install.sh -e
 ```
-$ cd ../plateform/
-$ mvn package
+
+* Pour plus d'aide
+```bash
+./install.sh -h
 ```
-* Naviguez dans le dossier de l'application, compilez-la et lancez-la
+
+## Lancement
+
+
+* A la racine du projet, veuillez lancer :
+
+```bash
+./run.sh
 ```
-$ cd ../application/
-$ mvn package
-$ java -classpath target/legendary-invention-application-1.0-SNAPSHOT.jar com.alma.application.FirstTry 
+
+## Pour créer une nouvelle extension
+
+```bash
+./make-extension -n <extension_name> -c <classname>
 ```
