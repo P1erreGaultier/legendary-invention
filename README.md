@@ -8,7 +8,7 @@ Structure du projet :
 
 ## Pré-requis d'installation
 
-Les dépendances du projets sont : 
+Les dépendances du projet sont : 
 * Java JRE 1.7 ou supérieur
 
 ## Installation
