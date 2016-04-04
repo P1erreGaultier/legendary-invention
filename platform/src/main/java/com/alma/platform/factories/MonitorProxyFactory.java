@@ -16,9 +16,7 @@ public class MonitorProxyFactory implements IFactory {
         Class<?>[] instanceInterfaces = instance.getClass().getInterfaces();
         Class<?>[] interfaces = new Class<?>[instanceInterfaces.length + 1];
 
-        for(int i = 0; i < instanceInterfaces.length; i++) {
-            interfaces[i] = instanceInterfaces[i];
-        }
+        System.arraycopy(instanceInterfaces, 0, interfaces, 0, instanceInterfaces.length);
         interfaces[instanceInterfaces.length] = IMonitorProxy.class;
         return Proxy.newProxyInstance(loader, interfaces, new SimpleMonitorProxy(instance));
     }

@@ -12,8 +12,8 @@ import java.lang.reflect.Method;
  */
 public class SimpleMonitorProxy implements InvocationHandler {
 
-    private Object target;
-    protected String extension_name;
+    protected Object target;
+    protected String extensionName;
 
     public SimpleMonitorProxy(Object o) {
         target = o;
@@ -22,15 +22,15 @@ public class SimpleMonitorProxy implements InvocationHandler {
     @Override
     public Object invoke(Object o, Method method, Object[] args) throws Throwable {
         if(method.getName().equals("getExtensionName")) {
-            return extension_name;
+            return extensionName;
         } else if ((method.getName().equals("setExtensionName")) && (args[0] instanceof String)) {
-            extension_name = (String) args[0];
+            extensionName = (String) args[0];
             return null;
         } else {
             String msg = "Method " + method.getName() + " called by " + o.getClass().getName() + "#" + System.identityHashCode(o);
             Log log = new Log(LogLevel.NORMAL, target.getClass().getName(), msg);
             Monitor.getInstance().addLog(log);
-            Monitor.getInstance().reportMethodCall(extension_name, o.getClass().getName() + "#" + System.identityHashCode(o), method.getName());
+            Monitor.getInstance().reportMethodCall(extensionName, o.getClass().getName() + "#" + System.identityHashCode(o), method.getName());
 
             return method.invoke(target, args);
         }
