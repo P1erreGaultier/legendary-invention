@@ -4,11 +4,17 @@ import java.util.Random;
 import com.alma.application.interfaces.monster.IMonster;
 import com.alma.application.interfaces.monster.IMonsterFactory;
 
+/**
+ * Classe représentant une factory generant des monstres aleatoires
+ */
 public class MonsterFactory implements IMonsterFactory {
 
     public MonsterFactory() {
     }
 
+    /*
+    * Methode qui crée des monstres avec des points de vie entre 1 et 20, et avec une des 4 images de notre fichier ressources
+     */
     public IMonster createMonster20(){
         Random randomgenerator = new Random();
         IMonster m = new Monster();

@@ -1,8 +1,10 @@
-
 package com.extensions.onemonster;
 
 import com.alma.application.interfaces.monster.IMonster;
 
+/**
+ * Classe représentant monstre
+ */
 public class Monster implements IMonster{
 
 	private int hp;
