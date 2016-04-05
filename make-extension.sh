@@ -15,13 +15,6 @@ SHOW_HELP=false
 EXT_NAME=""
 MAIN_CLASS_NAME=""
 
-# check if maven is installed
-if ! hash mvn 2>/dev/null; then
-  echo "Error : Maven isn't installed, but it's required for the installation.
-    You can get it at http://maven.apache.org"
-  exit 1
-fi
-
 # check if app folder exists
 if [ ! -d "$APP_PATH" ]; then
   echo "Error : the application folder doesn't exist. Cannot work without it"
